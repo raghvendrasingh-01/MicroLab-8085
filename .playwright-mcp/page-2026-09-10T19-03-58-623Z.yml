@@ -1,0 +1,489 @@
+- generic [ref=f31e3]:
+  - generic [ref=f31e4]:
+    - generic [ref=f31e5]: MicroLab 8085
+    - button "Assemble" [ref=f31e6] [cursor=pointer]
+    - button "▶ Run" [ref=f31e7] [cursor=pointer]
+    - button "⏭ Step" [ref=f31e8] [cursor=pointer]
+    - button "↺ Reset" [ref=f31e9] [cursor=pointer]
+    - button "⤢ Focus" [ref=f31e10] [cursor=pointer]
+    - generic "Simulation speed (instructions per animation frame)" [ref=f31e11]:
+      - text: Speed
+      - combobox "Speed" [ref=f31e12]:
+        - option "Slow"
+        - option "Medium"
+        - option "Fast" [selected]
+        - option "Max"
+    - generic [ref=f31e13]: stopped
+    - button "Projects ▾" [ref=f31e15] [cursor=pointer]
+  - generic [ref=f31e16]:
+    - generic "Lab panels" [ref=f31e17]:
+      - generic [ref=f31e18]:
+        - generic "Hide Program" [ref=f31e19] [cursor=pointer]:
+          - generic [ref=f31e20]: Program
+          - button "Assemble ▶" [ref=f31e22]
+          - button "Hide Program" [ref=f31e23]: −
+        - generic [ref=f31e24]:
+          - generic [ref=f31e25]:
+            - generic [ref=f31e26] [cursor=pointer]: "1"
+            - generic [ref=f31e29] [cursor=pointer]: "2"
+            - generic [ref=f31e32] [cursor=pointer]: "3"
+            - generic [ref=f31e35] [cursor=pointer]: "4"
+            - generic [ref=f31e38] [cursor=pointer]: "5"
+            - generic [ref=f31e41] [cursor=pointer]: "6"
+            - generic [ref=f31e44] [cursor=pointer]: "7"
+            - generic [ref=f31e47] [cursor=pointer]: "8"
+            - generic [ref=f31e50] [cursor=pointer]: "9"
+            - generic [ref=f31e53] [cursor=pointer]: "10"
+          - textbox [ref=f31e56]: "; MicroLab 8085 — write your program here. ; Example: light alternating LEDs on Port A of the 8255 at 80H. ORG 2000H MVI A, 80H ; control word: all ports output OUT 83H MVI A, 55H ; 01010101 pattern OUT 80H HLT"
+        - separator "Resize program editor" [ref=f31e57]
+      - generic [ref=f31e58]:
+        - generic "Hide CPU 8085" [ref=f31e59] [cursor=pointer]:
+          - generic [ref=f31e60]: CPU 8085
+          - button "Hide CPU 8085" [ref=f31e61]: −
+        - generic [ref=f31e62]:
+          - generic [ref=f31e63]:
+            - generic [ref=f31e64]: A
+            - generic [ref=f31e65]: "00"
+          - generic [ref=f31e66]:
+            - generic [ref=f31e67]: B
+            - generic [ref=f31e68]: "00"
+          - generic [ref=f31e69]:
+            - generic [ref=f31e70]: C
+            - generic [ref=f31e71]: "00"
+          - generic [ref=f31e72]:
+            - generic [ref=f31e73]: D
+            - generic [ref=f31e74]: "00"
+          - generic [ref=f31e75]:
+            - generic [ref=f31e76]: E
+            - generic [ref=f31e77]: "00"
+          - generic [ref=f31e78]:
+            - generic [ref=f31e79]: H
+            - generic [ref=f31e80]: "00"
+          - generic [ref=f31e81]:
+            - generic [ref=f31e82]: L
+            - generic [ref=f31e83]: "00"
+        - generic [ref=f31e84]:
+          - generic [ref=f31e85]:
+            - generic [ref=f31e86]: PC
+            - generic [ref=f31e87]: "0000"
+          - generic [ref=f31e88]:
+            - generic [ref=f31e89]: SP
+            - generic [ref=f31e90]: "0000"
+        - generic [ref=f31e91]:
+          - generic [ref=f31e92]: S
+          - generic [ref=f31e93]: Z
+          - generic [ref=f31e94]: AC
+          - generic [ref=f31e95]: P
+          - generic [ref=f31e96]: CY
+        - generic "Instruction at PC" [ref=f31e97]:
+          - code [ref=f31e98]: NOP
+        - generic [ref=f31e99]: 0 instr · 0 T
+      - generic [ref=f31e100]:
+        - generic "Hide Memory" [ref=f31e101] [cursor=pointer]:
+          - generic [ref=f31e102]: Memory
+          - generic [ref=f31e104]:
+            - button "◀" [ref=f31e105]
+            - textbox "Page base address (hex)" [ref=f31e106]: "2000"
+            - button "▶" [ref=f31e107]
+          - button "Hide Memory" [ref=f31e108]: −
+        - table [ref=f31e110]:
+          - rowgroup [ref=f31e111]:
+            - row [ref=f31e112]:
+              - cell "2000" [ref=f31e113]
+              - cell "00" [ref=f31e114]
+              - cell "00" [ref=f31e115]
+              - cell "00" [ref=f31e116]
+              - cell "00" [ref=f31e117]
+              - cell "00" [ref=f31e118]
+              - cell "00" [ref=f31e119]
+              - cell "00" [ref=f31e120]
+              - cell "00" [ref=f31e121]
+              - cell "00" [ref=f31e122]
+              - cell "00" [ref=f31e123]
+              - cell "00" [ref=f31e124]
+              - cell "00" [ref=f31e125]
+              - cell "00" [ref=f31e126]
+              - cell "00" [ref=f31e127]
+              - cell "00" [ref=f31e128]
+              - cell "00" [ref=f31e129]
+            - row [ref=f31e130]:
+              - cell "2010" [ref=f31e131]
+              - cell "00" [ref=f31e132]
+              - cell "00" [ref=f31e133]
+              - cell "00" [ref=f31e134]
+              - cell "00" [ref=f31e135]
+              - cell "00" [ref=f31e136]
+              - cell "00" [ref=f31e137]
+              - cell "00" [ref=f31e138]
+              - cell "00" [ref=f31e139]
+              - cell "00" [ref=f31e140]
+              - cell "00" [ref=f31e141]
+              - cell "00" [ref=f31e142]
+              - cell "00" [ref=f31e143]
+              - cell "00" [ref=f31e144]
+              - cell "00" [ref=f31e145]
+              - cell "00" [ref=f31e146]
+              - cell "00" [ref=f31e147]
+            - row [ref=f31e148]:
+              - cell "2020" [ref=f31e149]
+              - cell "00" [ref=f31e150]
+              - cell "00" [ref=f31e151]
+              - cell "00" [ref=f31e152]
+              - cell "00" [ref=f31e153]
+              - cell "00" [ref=f31e154]
+              - cell "00" [ref=f31e155]
+              - cell "00" [ref=f31e156]
+              - cell "00" [ref=f31e157]
+              - cell "00" [ref=f31e158]
+              - cell "00" [ref=f31e159]
+              - cell "00" [ref=f31e160]
+              - cell "00" [ref=f31e161]
+              - cell "00" [ref=f31e162]
+              - cell "00" [ref=f31e163]
+              - cell "00" [ref=f31e164]
+              - cell "00" [ref=f31e165]
+            - row [ref=f31e166]:
+              - cell "2030" [ref=f31e167]
+              - cell "00" [ref=f31e168]
+              - cell "00" [ref=f31e169]
+              - cell "00" [ref=f31e170]
+              - cell "00" [ref=f31e171]
+              - cell "00" [ref=f31e172]
+              - cell "00" [ref=f31e173]
+              - cell "00" [ref=f31e174]
+              - cell "00" [ref=f31e175]
+              - cell "00" [ref=f31e176]
+              - cell "00" [ref=f31e177]
+              - cell "00" [ref=f31e178]
+              - cell "00" [ref=f31e179]
+              - cell "00" [ref=f31e180]
+              - cell "00" [ref=f31e181]
+              - cell "00" [ref=f31e182]
+              - cell "00" [ref=f31e183]
+            - row [ref=f31e184]:
+              - cell "2040" [ref=f31e185]
+              - cell "00" [ref=f31e186]
+              - cell "00" [ref=f31e187]
+              - cell "00" [ref=f31e188]
+              - cell "00" [ref=f31e189]
+              - cell "00" [ref=f31e190]
+              - cell "00" [ref=f31e191]
+              - cell "00" [ref=f31e192]
+              - cell "00" [ref=f31e193]
+              - cell "00" [ref=f31e194]
+              - cell "00" [ref=f31e195]
+              - cell "00" [ref=f31e196]
+              - cell "00" [ref=f31e197]
+              - cell "00" [ref=f31e198]
+              - cell "00" [ref=f31e199]
+              - cell "00" [ref=f31e200]
+              - cell "00" [ref=f31e201]
+            - row [ref=f31e202]:
+              - cell "2050" [ref=f31e203]
+              - cell "00" [ref=f31e204]
+              - cell "00" [ref=f31e205]
+              - cell "00" [ref=f31e206]
+              - cell "00" [ref=f31e207]
+              - cell "00" [ref=f31e208]
+              - cell "00" [ref=f31e209]
+              - cell "00" [ref=f31e210]
+              - cell "00" [ref=f31e211]
+              - cell "00" [ref=f31e212]
+              - cell "00" [ref=f31e213]
+              - cell "00" [ref=f31e214]
+              - cell "00" [ref=f31e215]
+              - cell "00" [ref=f31e216]
+              - cell "00" [ref=f31e217]
+              - cell "00" [ref=f31e218]
+              - cell "00" [ref=f31e219]
+            - row [ref=f31e220]:
+              - cell "2060" [ref=f31e221]
+              - cell "00" [ref=f31e222]
+              - cell "00" [ref=f31e223]
+              - cell "00" [ref=f31e224]
+              - cell "00" [ref=f31e225]
+              - cell "00" [ref=f31e226]
+              - cell "00" [ref=f31e227]
+              - cell "00" [ref=f31e228]
+              - cell "00" [ref=f31e229]
+              - cell "00" [ref=f31e230]
+              - cell "00" [ref=f31e231]
+              - cell "00" [ref=f31e232]
+              - cell "00" [ref=f31e233]
+              - cell "00" [ref=f31e234]
+              - cell "00" [ref=f31e235]
+              - cell "00" [ref=f31e236]
+              - cell "00" [ref=f31e237]
+            - row [ref=f31e238]:
+              - cell "2070" [ref=f31e239]
+              - cell "00" [ref=f31e240]
+              - cell "00" [ref=f31e241]
+              - cell "00" [ref=f31e242]
+              - cell "00" [ref=f31e243]
+              - cell "00" [ref=f31e244]
+              - cell "00" [ref=f31e245]
+              - cell "00" [ref=f31e246]
+              - cell "00" [ref=f31e247]
+              - cell "00" [ref=f31e248]
+              - cell "00" [ref=f31e249]
+              - cell "00" [ref=f31e250]
+              - cell "00" [ref=f31e251]
+              - cell "00" [ref=f31e252]
+              - cell "00" [ref=f31e253]
+              - cell "00" [ref=f31e254]
+              - cell "00" [ref=f31e255]
+            - row [ref=f31e256]:
+              - cell "2080" [ref=f31e257]
+              - cell "00" [ref=f31e258]
+              - cell "00" [ref=f31e259]
+              - cell "00" [ref=f31e260]
+              - cell "00" [ref=f31e261]
+              - cell "00" [ref=f31e262]
+              - cell "00" [ref=f31e263]
+              - cell "00" [ref=f31e264]
+              - cell "00" [ref=f31e265]
+              - cell "00" [ref=f31e266]
+              - cell "00" [ref=f31e267]
+              - cell "00" [ref=f31e268]
+              - cell "00" [ref=f31e269]
+              - cell "00" [ref=f31e270]
+              - cell "00" [ref=f31e271]
+              - cell "00" [ref=f31e272]
+              - cell "00" [ref=f31e273]
+            - row [ref=f31e274]:
+              - cell "2090" [ref=f31e275]
+              - cell "00" [ref=f31e276]
+              - cell "00" [ref=f31e277]
+              - cell "00" [ref=f31e278]
+              - cell "00" [ref=f31e279]
+              - cell "00" [ref=f31e280]
+              - cell "00" [ref=f31e281]
+              - cell "00" [ref=f31e282]
+              - cell "00" [ref=f31e283]
+              - cell "00" [ref=f31e284]
+              - cell "00" [ref=f31e285]
+              - cell "00" [ref=f31e286]
+              - cell "00" [ref=f31e287]
+              - cell "00" [ref=f31e288]
+              - cell "00" [ref=f31e289]
+              - cell "00" [ref=f31e290]
+              - cell "00" [ref=f31e291]
+            - row [ref=f31e292]:
+              - cell "20A0" [ref=f31e293]
+              - cell "00" [ref=f31e294]
+              - cell "00" [ref=f31e295]
+              - cell "00" [ref=f31e296]
+              - cell "00" [ref=f31e297]
+              - cell "00" [ref=f31e298]
+              - cell "00" [ref=f31e299]
+              - cell "00" [ref=f31e300]
+              - cell "00" [ref=f31e301]
+              - cell "00" [ref=f31e302]
+              - cell "00" [ref=f31e303]
+              - cell "00" [ref=f31e304]
+              - cell "00" [ref=f31e305]
+              - cell "00" [ref=f31e306]
+              - cell "00" [ref=f31e307]
+              - cell "00" [ref=f31e308]
+              - cell "00" [ref=f31e309]
+            - row [ref=f31e310]:
+              - cell "20B0" [ref=f31e311]
+              - cell "00" [ref=f31e312]
+              - cell "00" [ref=f31e313]
+              - cell "00" [ref=f31e314]
+              - cell "00" [ref=f31e315]
+              - cell "00" [ref=f31e316]
+              - cell "00" [ref=f31e317]
+              - cell "00" [ref=f31e318]
+              - cell "00" [ref=f31e319]
+              - cell "00" [ref=f31e320]
+              - cell "00" [ref=f31e321]
+              - cell "00" [ref=f31e322]
+              - cell "00" [ref=f31e323]
+              - cell "00" [ref=f31e324]
+              - cell "00" [ref=f31e325]
+              - cell "00" [ref=f31e326]
+              - cell "00" [ref=f31e327]
+            - row [ref=f31e328]:
+              - cell "20C0" [ref=f31e329]
+              - cell "00" [ref=f31e330]
+              - cell "00" [ref=f31e331]
+              - cell "00" [ref=f31e332]
+              - cell "00" [ref=f31e333]
+              - cell "00" [ref=f31e334]
+              - cell "00" [ref=f31e335]
+              - cell "00" [ref=f31e336]
+              - cell "00" [ref=f31e337]
+              - cell "00" [ref=f31e338]
+              - cell "00" [ref=f31e339]
+              - cell "00" [ref=f31e340]
+              - cell "00" [ref=f31e341]
+              - cell "00" [ref=f31e342]
+              - cell "00" [ref=f31e343]
+              - cell "00" [ref=f31e344]
+              - cell "00" [ref=f31e345]
+            - row [ref=f31e346]:
+              - cell "20D0" [ref=f31e347]
+              - cell "00" [ref=f31e348]
+              - cell "00" [ref=f31e349]
+              - cell "00" [ref=f31e350]
+              - cell "00" [ref=f31e351]
+              - cell "00" [ref=f31e352]
+              - cell "00" [ref=f31e353]
+              - cell "00" [ref=f31e354]
+              - cell "00" [ref=f31e355]
+              - cell "00" [ref=f31e356]
+              - cell "00" [ref=f31e357]
+              - cell "00" [ref=f31e358]
+              - cell "00" [ref=f31e359]
+              - cell "00" [ref=f31e360]
+              - cell "00" [ref=f31e361]
+              - cell "00" [ref=f31e362]
+              - cell "00" [ref=f31e363]
+            - row [ref=f31e364]:
+              - cell "20E0" [ref=f31e365]
+              - cell "00" [ref=f31e366]
+              - cell "00" [ref=f31e367]
+              - cell "00" [ref=f31e368]
+              - cell "00" [ref=f31e369]
+              - cell "00" [ref=f31e370]
+              - cell "00" [ref=f31e371]
+              - cell "00" [ref=f31e372]
+              - cell "00" [ref=f31e373]
+              - cell "00" [ref=f31e374]
+              - cell "00" [ref=f31e375]
+              - cell "00" [ref=f31e376]
+              - cell "00" [ref=f31e377]
+              - cell "00" [ref=f31e378]
+              - cell "00" [ref=f31e379]
+              - cell "00" [ref=f31e380]
+              - cell "00" [ref=f31e381]
+            - row [ref=f31e382]:
+              - cell "20F0" [ref=f31e383]
+              - cell "00" [ref=f31e384]
+              - cell "00" [ref=f31e385]
+              - cell "00" [ref=f31e386]
+              - cell "00" [ref=f31e387]
+              - cell "00" [ref=f31e388]
+              - cell "00" [ref=f31e389]
+              - cell "00" [ref=f31e390]
+              - cell "00" [ref=f31e391]
+              - cell "00" [ref=f31e392]
+              - cell "00" [ref=f31e393]
+              - cell "00" [ref=f31e394]
+              - cell "00" [ref=f31e395]
+              - cell "00" [ref=f31e396]
+              - cell "00" [ref=f31e397]
+              - cell "00" [ref=f31e398]
+              - cell "00" [ref=f31e399]
+    - separator "Resize left column" [ref=f31e400]
+    - generic [ref=f31e401]:
+      - generic [ref=f31e407]:
+        - button "−" [ref=f31e408] [cursor=pointer]
+        - generic [ref=f31e409]: 100%
+        - button "+" [ref=f31e410] [cursor=pointer]
+        - button "⤢ Fit" [ref=f31e411] [cursor=pointer]
+      - generic [ref=f31e412]:
+        - generic "Hide Console" [ref=f31e413] [cursor=pointer]:
+          - generic [ref=f31e414]: Console
+          - button "Clear" [ref=f31e416]
+          - button "Hide Console" [ref=f31e417]: −
+        - separator "Resize console" [ref=f31e418]
+        - generic [ref=f31e419]: MicroLab 8085 ready. Place components, wire them, assemble and run.
+    - separator "Resize right column" [ref=f31e421]
+    - generic "Component panels" [ref=f31e422]:
+      - generic "Show Experiments" [ref=f31e424] [cursor=pointer]:
+        - generic [ref=f31e425]: Experiments
+        - button "Show Experiments" [ref=f31e426]: +
+      - generic [ref=f31e427]:
+        - generic "Hide Components" [ref=f31e428] [cursor=pointer]:
+          - generic [ref=f31e429]: Components
+          - button "Hide Components" [ref=f31e430]: −
+        - generic [ref=f31e431]:
+          - generic [ref=f31e432]:
+            - generic [ref=f31e433]:
+              - generic [ref=f31e434]: 8255 PPI
+              - generic [ref=f31e435]: Programmable Peripheral Interface — Ports A, B, C
+            - button "ⓘ" [ref=f31e436] [cursor=pointer]
+            - button "+" [ref=f31e437] [cursor=pointer]
+          - generic [ref=f31e438]:
+            - generic [ref=f31e439]:
+              - generic [ref=f31e440]: LED bank
+              - generic [ref=f31e441]: 8 LEDs, one per data pin
+            - button "ⓘ" [ref=f31e442] [cursor=pointer]
+            - button "+" [ref=f31e443] [cursor=pointer]
+          - generic [ref=f31e444]:
+            - generic [ref=f31e445]:
+              - generic [ref=f31e446]: DIP switches
+              - generic [ref=f31e447]: 8 toggle switches the user flips
+            - button "ⓘ" [ref=f31e448] [cursor=pointer]
+            - button "+" [ref=f31e449] [cursor=pointer]
+          - generic [ref=f31e450]:
+            - generic [ref=f31e451]:
+              - generic [ref=f31e452]: 7-segment display
+              - generic [ref=f31e453]: One digit, segments a–g + dp
+            - button "ⓘ" [ref=f31e454] [cursor=pointer]
+            - button "+" [ref=f31e455] [cursor=pointer]
+          - generic [ref=f31e456]:
+            - generic [ref=f31e457]:
+              - generic [ref=f31e458]: 4×4 keypad
+              - generic [ref=f31e459]: Matrix keypad, rows in / columns out
+            - button "ⓘ" [ref=f31e460] [cursor=pointer]
+            - button "+" [ref=f31e461] [cursor=pointer]
+          - generic [ref=f31e462]:
+            - generic [ref=f31e463]:
+              - generic [ref=f31e464]: LCD 16×2
+              - generic [ref=f31e465]: HD44780-style text display, 8-bit bus
+            - button "ⓘ" [ref=f31e466] [cursor=pointer]
+            - button "+" [ref=f31e467] [cursor=pointer]
+          - generic [ref=f31e468]:
+            - generic [ref=f31e469]:
+              - generic [ref=f31e470]: ADC0808
+              - generic [ref=f31e471]: 8-channel 8-bit A/D converter
+            - button "ⓘ" [ref=f31e472] [cursor=pointer]
+            - button "+" [ref=f31e473] [cursor=pointer]
+          - generic [ref=f31e474]:
+            - generic [ref=f31e475]:
+              - generic [ref=f31e476]: Potentiometer
+              - generic [ref=f31e477]: Adjustable 0–5 V knob
+            - button "ⓘ" [ref=f31e478] [cursor=pointer]
+            - button "+" [ref=f31e479] [cursor=pointer]
+          - generic [ref=f31e480]:
+            - generic [ref=f31e481]:
+              - generic [ref=f31e482]: LM35 sensor
+              - generic [ref=f31e483]: Temperature sensor, 10 mV/°C
+            - button "ⓘ" [ref=f31e484] [cursor=pointer]
+            - button "+" [ref=f31e485] [cursor=pointer]
+          - generic [ref=f31e486]:
+            - generic [ref=f31e487]:
+              - generic [ref=f31e488]: Light sensor
+              - generic [ref=f31e489]: LDR — light level to voltage
+            - button "ⓘ" [ref=f31e490] [cursor=pointer]
+            - button "+" [ref=f31e491] [cursor=pointer]
+          - generic [ref=f31e492]:
+            - generic [ref=f31e493]:
+              - generic [ref=f31e494]: DAC0808
+              - generic [ref=f31e495]: 8-bit D/A converter
+            - button "ⓘ" [ref=f31e496] [cursor=pointer]
+            - button "+" [ref=f31e497] [cursor=pointer]
+          - generic [ref=f31e498]:
+            - generic [ref=f31e499]:
+              - generic [ref=f31e500]: Oscilloscope
+              - generic [ref=f31e501]: 4-channel waveform viewer
+            - button "ⓘ" [ref=f31e502] [cursor=pointer]
+            - button "+" [ref=f31e503] [cursor=pointer]
+      - generic "Show Inspector" [ref=f31e505] [cursor=pointer]:
+        - generic [ref=f31e506]: Inspector
+        - button "Show Inspector" [ref=f31e507]: +
+      - generic "Show I/O map" [ref=f31e509] [cursor=pointer]:
+        - generic [ref=f31e510]: I/O map
+        - button "Show I/O map" [ref=f31e511]: +
+      - generic [ref=f31e512]:
+        - generic "Hide Diagnostics" [ref=f31e513] [cursor=pointer]:
+          - generic [ref=f31e514]: Diagnostics
+          - generic [ref=f31e515]: 1 problem found
+          - button "Hide Diagnostics" [ref=f31e517]: −
+        - list [ref=f31e518]:
+          - listitem [ref=f31e519]:
+            - generic [aria-hidden] [ref=f31e520]: ✗
+            - generic [ref=f31e521]: No program loaded — assemble first (Ctrl+Enter).

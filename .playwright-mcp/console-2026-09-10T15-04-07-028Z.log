@@ -1,0 +1,9 @@
+[     482ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=c4dab5f0:22162
+[     489ms] ReferenceError: Cannot access 'DEFAULT_SOURCE' before initialization
+    at http://localhost:5199/src/store/labStore.ts:64:13
+    at createStoreImpl (http://localhost:5199/node_modules/.vite/deps/zustand.js?v=87f79c87:25:32)
+    at createStore (http://localhost:5199/node_modules/.vite/deps/zustand.js?v=87f79c87:28:51)
+    at createImpl (http://localhost:5199/node_modules/.vite/deps/zustand.js?v=87f79c87:43:15)
+    at create (http://localhost:5199/node_modules/.vite/deps/zustand.js?v=87f79c87:48:46)
+    at http://localhost:5199/src/store/labStore.ts:19:23
+[     488ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5199/favicon.ico:0

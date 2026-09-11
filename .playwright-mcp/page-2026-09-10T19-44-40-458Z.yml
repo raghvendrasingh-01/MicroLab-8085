@@ -1,0 +1,438 @@
+- generic [ref=f42e3]:
+  - generic [ref=f42e4]:
+    - generic [ref=f42e5]: MicroLab 8085
+    - button "Assemble" [ref=f42e6] [cursor=pointer]
+    - button "▶ Run" [ref=f42e7] [cursor=pointer]
+    - button "⏭ Step" [ref=f42e8] [cursor=pointer]
+    - button "↺ Reset" [ref=f42e9] [cursor=pointer]
+    - button "⤢ Focus" [ref=f42e10] [cursor=pointer]
+    - generic "Simulation speed (instructions per animation frame)" [ref=f42e11]:
+      - text: Speed
+      - combobox "Speed" [ref=f42e12]:
+        - option "Slow"
+        - option "Medium"
+        - option "Fast" [selected]
+        - option "Max"
+    - generic [ref=f42e13]: stopped
+    - button "Projects ▾" [ref=f42e15] [cursor=pointer]
+  - generic [ref=f42e16]:
+    - generic "Lab panels" [ref=f42e17]:
+      - generic [ref=f42e18]:
+        - generic "Hide Program" [ref=f42e19] [cursor=pointer]:
+          - generic [ref=f42e20]: Program
+          - generic [ref=f42e21]:
+            - button "⌗ Bytes" [ref=f42e22]
+            - button "Assemble ▶" [ref=f42e23]
+          - button "Hide Program" [ref=f42e24]: −
+        - generic [ref=f42e25]:
+          - generic [ref=f42e26]:
+            - generic [ref=f42e27] [cursor=pointer]: "1"
+            - generic [ref=f42e30] [cursor=pointer]: "2"
+            - generic [ref=f42e33] [cursor=pointer]: "3"
+            - generic [ref=f42e36] [cursor=pointer]: "4"
+            - generic "2000H — click to toggle breakpoint" [ref=f42e39] [cursor=pointer]:
+              - generic [ref=f42e41]: "5"
+              - generic [ref=f42e42]: ▶
+            - generic "2002H — click to toggle breakpoint" [ref=f42e43] [cursor=pointer]: "6"
+            - generic "2004H — click to toggle breakpoint" [ref=f42e46] [cursor=pointer]: "7"
+            - generic "2006H — click to toggle breakpoint" [ref=f42e49] [cursor=pointer]: "8"
+            - generic "2008H — click to toggle breakpoint" [ref=f42e52] [cursor=pointer]: "9"
+            - generic [ref=f42e55] [cursor=pointer]: "10"
+          - generic [ref=f42e58]:
+            - button [ref=f42e59] [cursor=pointer]
+            - button [ref=f42e60] [cursor=pointer]
+            - button [ref=f42e61] [cursor=pointer]
+            - button [ref=f42e62] [cursor=pointer]
+            - button "3E 80" [ref=f42e63] [cursor=pointer]
+            - button "D3 83" [ref=f42e64] [cursor=pointer]
+            - button "3E 55" [ref=f42e65] [cursor=pointer]
+            - button "D3 80" [ref=f42e66] [cursor=pointer]
+            - button "76" [ref=f42e67] [cursor=pointer]
+            - button [ref=f42e68] [cursor=pointer]
+          - textbox [ref=f42e69]: "; MicroLab 8085 — write your program here. ; Example: light alternating LEDs on Port A of the 8255 at 80H. ORG 2000H MVI A, 80H ; control word: all ports output OUT 83H MVI A, 55H ; 01010101 pattern OUT 80H HLT"
+        - separator "Resize program editor" [ref=f42e70]
+      - generic [ref=f42e71]:
+        - generic "Hide CPU 8085" [ref=f42e72] [cursor=pointer]:
+          - generic [ref=f42e73]: CPU 8085
+          - button "Hide CPU 8085" [ref=f42e74]: −
+        - generic [ref=f42e75]:
+          - generic [ref=f42e76]:
+            - generic [ref=f42e77]: A
+            - generic [ref=f42e78]: "00"
+          - generic [ref=f42e79]:
+            - generic [ref=f42e80]: B
+            - generic [ref=f42e81]: "00"
+          - generic [ref=f42e82]:
+            - generic [ref=f42e83]: C
+            - generic [ref=f42e84]: "00"
+          - generic [ref=f42e85]:
+            - generic [ref=f42e86]: D
+            - generic [ref=f42e87]: "00"
+          - generic [ref=f42e88]:
+            - generic [ref=f42e89]: E
+            - generic [ref=f42e90]: "00"
+          - generic [ref=f42e91]:
+            - generic [ref=f42e92]: H
+            - generic [ref=f42e93]: "00"
+          - generic [ref=f42e94]:
+            - generic [ref=f42e95]: L
+            - generic [ref=f42e96]: "00"
+        - generic [ref=f42e97]:
+          - generic [ref=f42e98]:
+            - generic [ref=f42e99]: PC
+            - generic [ref=f42e100]: "2000"
+          - generic [ref=f42e101]:
+            - generic [ref=f42e102]: SP
+            - generic [ref=f42e103]: "0000"
+        - generic [ref=f42e104]:
+          - generic [ref=f42e105]: S
+          - generic [ref=f42e106]: Z
+          - generic [ref=f42e107]: AC
+          - generic [ref=f42e108]: P
+          - generic [ref=f42e109]: CY
+        - generic "Instruction at PC" [ref=f42e110]:
+          - code [ref=f42e111]: MVI A,80H
+        - generic [ref=f42e112]: 0 instr · 0 T
+      - generic [ref=f42e113]:
+        - generic "Hide Memory" [ref=f42e114] [cursor=pointer]:
+          - generic [ref=f42e115]: Memory
+          - generic [ref=f42e117]:
+            - button "◀" [ref=f42e118]
+            - textbox "Page base address (hex)" [ref=f42e119]: "2000"
+            - button "▶" [ref=f42e120]
+          - button "Hide Memory" [ref=f42e121]: −
+        - table [ref=f42e123]:
+          - rowgroup [ref=f42e124]:
+            - row [ref=f42e125]:
+              - cell "2000" [ref=f42e126]
+              - cell "3E" [ref=f42e127]
+              - cell "80" [ref=f42e128]
+              - cell "D3" [ref=f42e129]
+              - cell "83" [ref=f42e130]
+              - cell "3E" [ref=f42e131]
+              - cell "55" [ref=f42e132]
+              - cell "D3" [ref=f42e133]
+              - cell "80" [ref=f42e134]
+              - cell "76" [ref=f42e135]
+              - cell "00" [ref=f42e136]
+              - cell "00" [ref=f42e137]
+              - cell "00" [ref=f42e138]
+              - cell "00" [ref=f42e139]
+              - cell "00" [ref=f42e140]
+              - cell "00" [ref=f42e141]
+              - cell "00" [ref=f42e142]
+            - row [ref=f42e143]:
+              - cell "2010" [ref=f42e144]
+              - cell "00" [ref=f42e145]
+              - cell "00" [ref=f42e146]
+              - cell "00" [ref=f42e147]
+              - cell "00" [ref=f42e148]
+              - cell "00" [ref=f42e149]
+              - cell "00" [ref=f42e150]
+              - cell "00" [ref=f42e151]
+              - cell "00" [ref=f42e152]
+              - cell "00" [ref=f42e153]
+              - cell "00" [ref=f42e154]
+              - cell "00" [ref=f42e155]
+              - cell "00" [ref=f42e156]
+              - cell "00" [ref=f42e157]
+              - cell "00" [ref=f42e158]
+              - cell "00" [ref=f42e159]
+              - cell "00" [ref=f42e160]
+            - row [ref=f42e161]:
+              - cell "2020" [ref=f42e162]
+              - cell "00" [ref=f42e163]
+              - cell "00" [ref=f42e164]
+              - cell "00" [ref=f42e165]
+              - cell "00" [ref=f42e166]
+              - cell "00" [ref=f42e167]
+              - cell "00" [ref=f42e168]
+              - cell "00" [ref=f42e169]
+              - cell "00" [ref=f42e170]
+              - cell "00" [ref=f42e171]
+              - cell "00" [ref=f42e172]
+              - cell "00" [ref=f42e173]
+              - cell "00" [ref=f42e174]
+              - cell "00" [ref=f42e175]
+              - cell "00" [ref=f42e176]
+              - cell "00" [ref=f42e177]
+              - cell "00" [ref=f42e178]
+            - row [ref=f42e179]:
+              - cell "2030" [ref=f42e180]
+              - cell "00" [ref=f42e181]
+              - cell "00" [ref=f42e182]
+              - cell "00" [ref=f42e183]
+              - cell "00" [ref=f42e184]
+              - cell "00" [ref=f42e185]
+              - cell "00" [ref=f42e186]
+              - cell "00" [ref=f42e187]
+              - cell "00" [ref=f42e188]
+              - cell "00" [ref=f42e189]
+              - cell "00" [ref=f42e190]
+              - cell "00" [ref=f42e191]
+              - cell "00" [ref=f42e192]
+              - cell "00" [ref=f42e193]
+              - cell "00" [ref=f42e194]
+              - cell "00" [ref=f42e195]
+              - cell "00" [ref=f42e196]
+            - row [ref=f42e197]:
+              - cell "2040" [ref=f42e198]
+              - cell "00" [ref=f42e199]
+              - cell "00" [ref=f42e200]
+              - cell "00" [ref=f42e201]
+              - cell "00" [ref=f42e202]
+              - cell "00" [ref=f42e203]
+              - cell "00" [ref=f42e204]
+              - cell "00" [ref=f42e205]
+              - cell "00" [ref=f42e206]
+              - cell "00" [ref=f42e207]
+              - cell "00" [ref=f42e208]
+              - cell "00" [ref=f42e209]
+              - cell "00" [ref=f42e210]
+              - cell "00" [ref=f42e211]
+              - cell "00" [ref=f42e212]
+              - cell "00" [ref=f42e213]
+              - cell "00" [ref=f42e214]
+            - row [ref=f42e215]:
+              - cell "2050" [ref=f42e216]
+              - cell "00" [ref=f42e217]
+              - cell "00" [ref=f42e218]
+              - cell "00" [ref=f42e219]
+              - cell "00" [ref=f42e220]
+              - cell "00" [ref=f42e221]
+              - cell "00" [ref=f42e222]
+              - cell "00" [ref=f42e223]
+              - cell "00" [ref=f42e224]
+              - cell "00" [ref=f42e225]
+              - cell "00" [ref=f42e226]
+              - cell "00" [ref=f42e227]
+              - cell "00" [ref=f42e228]
+              - cell "00" [ref=f42e229]
+              - cell "00" [ref=f42e230]
+              - cell "00" [ref=f42e231]
+              - cell "00" [ref=f42e232]
+            - row [ref=f42e233]:
+              - cell "2060" [ref=f42e234]
+              - cell "00" [ref=f42e235]
+              - cell "00" [ref=f42e236]
+              - cell "00" [ref=f42e237]
+              - cell "00" [ref=f42e238]
+              - cell "00" [ref=f42e239]
+              - cell "00" [ref=f42e240]
+              - cell "00" [ref=f42e241]
+              - cell "00" [ref=f42e242]
+              - cell "00" [ref=f42e243]
+              - cell "00" [ref=f42e244]
+              - cell "00" [ref=f42e245]
+              - cell "00" [ref=f42e246]
+              - cell "00" [ref=f42e247]
+              - cell "00" [ref=f42e248]
+              - cell "00" [ref=f42e249]
+              - cell "00" [ref=f42e250]
+            - row [ref=f42e251]:
+              - cell "2070" [ref=f42e252]
+              - cell "00" [ref=f42e253]
+              - cell "00" [ref=f42e254]
+              - cell "00" [ref=f42e255]
+              - cell "00" [ref=f42e256]
+              - cell "00" [ref=f42e257]
+              - cell "00" [ref=f42e258]
+              - cell "00" [ref=f42e259]
+              - cell "00" [ref=f42e260]
+              - cell "00" [ref=f42e261]
+              - cell "00" [ref=f42e262]
+              - cell "00" [ref=f42e263]
+              - cell "00" [ref=f42e264]
+              - cell "00" [ref=f42e265]
+              - cell "00" [ref=f42e266]
+              - cell "00" [ref=f42e267]
+              - cell "00" [ref=f42e268]
+            - row [ref=f42e269]:
+              - cell "2080" [ref=f42e270]
+              - cell "00" [ref=f42e271]
+              - cell "00" [ref=f42e272]
+              - cell "00" [ref=f42e273]
+              - cell "00" [ref=f42e274]
+              - cell "00" [ref=f42e275]
+              - cell "00" [ref=f42e276]
+              - cell "00" [ref=f42e277]
+              - cell "00" [ref=f42e278]
+              - cell "00" [ref=f42e279]
+              - cell "00" [ref=f42e280]
+              - cell "00" [ref=f42e281]
+              - cell "00" [ref=f42e282]
+              - cell "00" [ref=f42e283]
+              - cell "00" [ref=f42e284]
+              - cell "00" [ref=f42e285]
+              - cell "00" [ref=f42e286]
+            - row [ref=f42e287]:
+              - cell "2090" [ref=f42e288]
+              - cell "00" [ref=f42e289]
+              - cell "00" [ref=f42e290]
+              - cell "00" [ref=f42e291]
+              - cell "00" [ref=f42e292]
+              - cell "00" [ref=f42e293]
+              - cell "00" [ref=f42e294]
+              - cell "00" [ref=f42e295]
+              - cell "00" [ref=f42e296]
+              - cell "00" [ref=f42e297]
+              - cell "00" [ref=f42e298]
+              - cell "00" [ref=f42e299]
+              - cell "00" [ref=f42e300]
+              - cell "00" [ref=f42e301]
+              - cell "00" [ref=f42e302]
+              - cell "00" [ref=f42e303]
+              - cell "00" [ref=f42e304]
+            - row [ref=f42e305]:
+              - cell "20A0" [ref=f42e306]
+              - cell "00" [ref=f42e307]
+              - cell "00" [ref=f42e308]
+              - cell "00" [ref=f42e309]
+              - cell "00" [ref=f42e310]
+              - cell "00" [ref=f42e311]
+              - cell "00" [ref=f42e312]
+              - cell "00" [ref=f42e313]
+              - cell "00" [ref=f42e314]
+              - cell "00" [ref=f42e315]
+              - cell "00" [ref=f42e316]
+              - cell "00" [ref=f42e317]
+              - cell "00" [ref=f42e318]
+              - cell "00" [ref=f42e319]
+              - cell "00" [ref=f42e320]
+              - cell "00" [ref=f42e321]
+              - cell "00" [ref=f42e322]
+            - row [ref=f42e323]:
+              - cell "20B0" [ref=f42e324]
+              - cell "00" [ref=f42e325]
+              - cell "00" [ref=f42e326]
+              - cell "00" [ref=f42e327]
+              - cell "00" [ref=f42e328]
+              - cell "00" [ref=f42e329]
+              - cell "00" [ref=f42e330]
+              - cell "00" [ref=f42e331]
+              - cell "00" [ref=f42e332]
+              - cell "00" [ref=f42e333]
+              - cell "00" [ref=f42e334]
+              - cell "00" [ref=f42e335]
+              - cell "00" [ref=f42e336]
+              - cell "00" [ref=f42e337]
+              - cell "00" [ref=f42e338]
+              - cell "00" [ref=f42e339]
+              - cell "00" [ref=f42e340]
+            - row [ref=f42e341]:
+              - cell "20C0" [ref=f42e342]
+              - cell "00" [ref=f42e343]
+              - cell "00" [ref=f42e344]
+              - cell "00" [ref=f42e345]
+              - cell "00" [ref=f42e346]
+              - cell "00" [ref=f42e347]
+              - cell "00" [ref=f42e348]
+              - cell "00" [ref=f42e349]
+              - cell "00" [ref=f42e350]
+              - cell "00" [ref=f42e351]
+              - cell "00" [ref=f42e352]
+              - cell "00" [ref=f42e353]
+              - cell "00" [ref=f42e354]
+              - cell "00" [ref=f42e355]
+              - cell "00" [ref=f42e356]
+              - cell "00" [ref=f42e357]
+              - cell "00" [ref=f42e358]
+            - row [ref=f42e359]:
+              - cell "20D0" [ref=f42e360]
+              - cell "00" [ref=f42e361]
+              - cell "00" [ref=f42e362]
+              - cell "00" [ref=f42e363]
+              - cell "00" [ref=f42e364]
+              - cell "00" [ref=f42e365]
+              - cell "00" [ref=f42e366]
+              - cell "00" [ref=f42e367]
+              - cell "00" [ref=f42e368]
+              - cell "00" [ref=f42e369]
+              - cell "00" [ref=f42e370]
+              - cell "00" [ref=f42e371]
+              - cell "00" [ref=f42e372]
+              - cell "00" [ref=f42e373]
+              - cell "00" [ref=f42e374]
+              - cell "00" [ref=f42e375]
+              - cell "00" [ref=f42e376]
+            - row [ref=f42e377]:
+              - cell "20E0" [ref=f42e378]
+              - cell "00" [ref=f42e379]
+              - cell "00" [ref=f42e380]
+              - cell "00" [ref=f42e381]
+              - cell "00" [ref=f42e382]
+              - cell "00" [ref=f42e383]
+              - cell "00" [ref=f42e384]
+              - cell "00" [ref=f42e385]
+              - cell "00" [ref=f42e386]
+              - cell "00" [ref=f42e387]
+              - cell "00" [ref=f42e388]
+              - cell "00" [ref=f42e389]
+              - cell "00" [ref=f42e390]
+              - cell "00" [ref=f42e391]
+              - cell "00" [ref=f42e392]
+              - cell "00" [ref=f42e393]
+              - cell "00" [ref=f42e394]
+            - row [ref=f42e395]:
+              - cell "20F0" [ref=f42e396]
+              - cell "00" [ref=f42e397]
+              - cell "00" [ref=f42e398]
+              - cell "00" [ref=f42e399]
+              - cell "00" [ref=f42e400]
+              - cell "00" [ref=f42e401]
+              - cell "00" [ref=f42e402]
+              - cell "00" [ref=f42e403]
+              - cell "00" [ref=f42e404]
+              - cell "00" [ref=f42e405]
+              - cell "00" [ref=f42e406]
+              - cell "00" [ref=f42e407]
+              - cell "00" [ref=f42e408]
+              - cell "00" [ref=f42e409]
+              - cell "00" [ref=f42e410]
+              - cell "00" [ref=f42e411]
+              - cell "00" [ref=f42e412]
+    - separator "Resize left column" [ref=f42e413]
+    - generic [ref=f42e414]:
+      - generic [ref=f42e420]:
+        - button "−" [ref=f42e421] [cursor=pointer]
+        - generic [ref=f42e422]: 100%
+        - button "+" [ref=f42e423] [cursor=pointer]
+        - button "⤢ Fit" [ref=f42e424] [cursor=pointer]
+      - generic [ref=f42e425]:
+        - generic "Hide Console" [ref=f42e426] [cursor=pointer]:
+          - generic [ref=f42e427]: Console
+          - button "Clear" [ref=f42e429]
+          - button "Hide Console" [ref=f42e430]: −
+        - separator "Resize console" [ref=f42e431]
+        - generic [ref=f42e432]:
+          - generic [ref=f42e433]: MicroLab 8085 ready. Place components, wire them, assemble and run.
+          - generic [ref=f42e434]: Assembled 9 bytes at 2000H (1 segment), program loaded.
+    - separator "Resize right column" [ref=f42e435]
+    - generic "Component panels" [ref=f42e436]:
+      - generic "Show Experiments" [ref=f42e438] [cursor=pointer]:
+        - generic [ref=f42e439]: Experiments
+        - button "Show Experiments" [ref=f42e440]: +
+      - generic "Show Components" [ref=f42e442] [cursor=pointer]:
+        - generic [ref=f42e443]: Components
+        - button "Show Components" [ref=f42e444]: +
+      - generic "Show Inspector" [ref=f42e446] [cursor=pointer]:
+        - generic [ref=f42e447]: Inspector
+        - button "Show Inspector" [ref=f42e448]: +
+      - generic "Show I/O map" [ref=f42e450] [cursor=pointer]:
+        - generic [ref=f42e451]: I/O map
+        - button "Show I/O map" [ref=f42e452]: +
+      - generic [ref=f42e453]:
+        - generic "Hide Diagnostics" [ref=f42e454] [cursor=pointer]:
+          - generic [ref=f42e455]: Diagnostics
+          - generic [ref=f42e456]: 1 problem found
+          - button "Hide Diagnostics" [ref=f42e458]: −
+        - list [ref=f42e459]:
+          - listitem [ref=f42e460]:
+            - generic [aria-hidden] [ref=f42e461]: ✓
+            - generic [ref=f42e462]: Program assembled, entry 2000H.
+          - listitem [ref=f42e463]:
+            - generic [aria-hidden] [ref=f42e464]: •
+            - generic [ref=f42e465]: Program not started yet — press Run (Space).
+          - listitem [ref=f42e466]:
+            - generic [aria-hidden] [ref=f42e467]: ✗
+            - generic [ref=f42e468]: No I/O peripherals — IN/OUT have nowhere to go. Add an 8255.

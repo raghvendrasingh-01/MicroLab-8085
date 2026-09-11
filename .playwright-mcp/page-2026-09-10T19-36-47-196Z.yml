@@ -1,0 +1,126 @@
+- generic [ref=f37e3]:
+  - generic [ref=f37e4]:
+    - generic [ref=f37e5]: MicroLab 8085
+    - button "Assemble" [ref=f37e6] [cursor=pointer]
+    - button "▶ Run" [ref=f37e7] [cursor=pointer]
+    - button "⏭ Step" [ref=f37e8] [cursor=pointer]
+    - button "↺ Reset" [ref=f37e9] [cursor=pointer]
+    - button "⤢ Focus" [ref=f37e10] [cursor=pointer]
+    - generic "Simulation speed (instructions per animation frame)" [ref=f37e11]:
+      - text: Speed
+      - combobox "Speed" [ref=f37e12]:
+        - option "Slow"
+        - option "Medium"
+        - option "Fast" [selected]
+        - option "Max"
+    - generic [ref=f37e13]: stopped
+    - button "Projects ▾" [ref=f37e15] [cursor=pointer]
+  - generic [ref=f37e16]:
+    - generic "Lab panels" [ref=f37e17]:
+      - generic [ref=f37e18]:
+        - generic "Hide Program" [ref=f37e19] [cursor=pointer]:
+          - generic [ref=f37e20]: Program
+          - generic [ref=f37e21]:
+            - button "⌗ Bytes" [ref=f37e22]
+            - button "Assemble ▶" [ref=f37e23]
+          - button "Hide Program" [ref=f37e24]: −
+        - generic [ref=f37e25]:
+          - generic [ref=f37e26]:
+            - generic [ref=f37e27] [cursor=pointer]: "1"
+            - generic [ref=f37e30] [cursor=pointer]: "2"
+            - generic [ref=f37e33] [cursor=pointer]: "3"
+            - generic [ref=f37e36] [cursor=pointer]: "4"
+            - generic [ref=f37e39] [cursor=pointer]: "5"
+            - generic [ref=f37e42] [cursor=pointer]: "6"
+            - generic [ref=f37e45] [cursor=pointer]: "7"
+            - generic [ref=f37e48] [cursor=pointer]: "8"
+            - generic [ref=f37e51] [cursor=pointer]: "9"
+            - generic [ref=f37e54] [cursor=pointer]: "10"
+          - textbox [ref=f37e57]: "; MicroLab 8085 — write your program here. ; Example: light alternating LEDs on Port A of the 8255 at 80H. ORG 2000H MVI A, 80H ; control word: all ports output OUT 83H MVI A, 55H ; 01010101 pattern OUT 80H HLT"
+        - separator "Resize program editor" [ref=f37e58]
+      - generic [ref=f37e59]:
+        - generic "Hide CPU 8085" [ref=f37e60] [cursor=pointer]:
+          - generic [ref=f37e61]: CPU 8085
+          - button "Hide CPU 8085" [ref=f37e62]: −
+        - generic [ref=f37e63]:
+          - generic [ref=f37e64]:
+            - generic [ref=f37e65]: A
+            - generic [ref=f37e66]: "00"
+          - generic [ref=f37e67]:
+            - generic [ref=f37e68]: B
+            - generic [ref=f37e69]: "00"
+          - generic [ref=f37e70]:
+            - generic [ref=f37e71]: C
+            - generic [ref=f37e72]: "00"
+          - generic [ref=f37e73]:
+            - generic [ref=f37e74]: D
+            - generic [ref=f37e75]: "00"
+          - generic [ref=f37e76]:
+            - generic [ref=f37e77]: E
+            - generic [ref=f37e78]: "00"
+          - generic [ref=f37e79]:
+            - generic [ref=f37e80]: H
+            - generic [ref=f37e81]: "00"
+          - generic [ref=f37e82]:
+            - generic [ref=f37e83]: L
+            - generic [ref=f37e84]: "00"
+        - generic [ref=f37e85]:
+          - generic [ref=f37e86]:
+            - generic [ref=f37e87]: PC
+            - generic [ref=f37e88]: "0000"
+          - generic [ref=f37e89]:
+            - generic [ref=f37e90]: SP
+            - generic [ref=f37e91]: "0000"
+        - generic [ref=f37e92]:
+          - generic [ref=f37e93]: S
+          - generic [ref=f37e94]: Z
+          - generic [ref=f37e95]: AC
+          - generic [ref=f37e96]: P
+          - generic [ref=f37e97]: CY
+        - generic "Instruction at PC" [ref=f37e98]:
+          - code [ref=f37e99]: NOP
+        - generic [ref=f37e100]: 0 instr · 0 T
+      - generic "Show Memory" [ref=f37e102] [cursor=pointer]:
+        - generic [ref=f37e103]: Memory
+        - generic [ref=f37e105]:
+          - button "◀" [ref=f37e106]
+          - textbox "Page base address (hex)" [ref=f37e107]: "2000"
+          - button "▶" [ref=f37e108]
+        - button "Show Memory" [ref=f37e109]: +
+    - separator "Resize left column" [ref=f37e110]
+    - generic [ref=f37e111]:
+      - generic [ref=f37e117]:
+        - button "−" [ref=f37e118] [cursor=pointer]
+        - generic [ref=f37e119]: 100%
+        - button "+" [ref=f37e120] [cursor=pointer]
+        - button "⤢ Fit" [ref=f37e121] [cursor=pointer]
+      - generic [ref=f37e122]:
+        - generic "Hide Console" [ref=f37e123] [cursor=pointer]:
+          - generic [ref=f37e124]: Console
+          - button "Clear" [ref=f37e126]
+          - button "Hide Console" [ref=f37e127]: −
+        - separator "Resize console" [ref=f37e128]
+        - generic [ref=f37e129]: MicroLab 8085 ready. Place components, wire them, assemble and run.
+    - separator "Resize right column" [ref=f37e131]
+    - generic "Component panels" [ref=f37e132]:
+      - generic "Show Experiments" [ref=f37e134] [cursor=pointer]:
+        - generic [ref=f37e135]: Experiments
+        - button "Show Experiments" [ref=f37e136]: +
+      - generic "Show Components" [ref=f37e138] [cursor=pointer]:
+        - generic [ref=f37e139]: Components
+        - button "Show Components" [ref=f37e140]: +
+      - generic "Show Inspector" [ref=f37e142] [cursor=pointer]:
+        - generic [ref=f37e143]: Inspector
+        - button "Show Inspector" [ref=f37e144]: +
+      - generic "Show I/O map" [ref=f37e146] [cursor=pointer]:
+        - generic [ref=f37e147]: I/O map
+        - button "Show I/O map" [ref=f37e148]: +
+      - generic [ref=f37e149]:
+        - generic "Hide Diagnostics" [ref=f37e150] [cursor=pointer]:
+          - generic [ref=f37e151]: Diagnostics
+          - generic [ref=f37e152]: 1 problem found
+          - button "Hide Diagnostics" [ref=f37e154]: −
+        - list [ref=f37e155]:
+          - listitem [ref=f37e156]:
+            - generic [aria-hidden] [ref=f37e157]: ✗
+            - generic [ref=f37e158]: No program loaded — assemble first (Ctrl+Enter).

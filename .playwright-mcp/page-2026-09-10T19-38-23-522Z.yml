@@ -1,0 +1,147 @@
+- generic [ref=f38e3]:
+  - generic [ref=f38e4]:
+    - generic [ref=f38e5]: MicroLab 8085
+    - button "Assemble" [ref=f38e6] [cursor=pointer]
+    - button "▶ Run" [ref=f38e7] [cursor=pointer]
+    - button "⏭ Step" [ref=f38e8] [cursor=pointer]
+    - button "↺ Reset" [ref=f38e9] [cursor=pointer]
+    - button "⤢ Focus" [ref=f38e10] [cursor=pointer]
+    - generic "Simulation speed (instructions per animation frame)" [ref=f38e11]:
+      - text: Speed
+      - combobox "Speed" [ref=f38e12]:
+        - option "Slow"
+        - option "Medium"
+        - option "Fast" [selected]
+        - option "Max"
+    - generic [ref=f38e13]: stopped
+    - button "Projects ▾" [ref=f38e15] [cursor=pointer]
+  - generic [ref=f38e16]:
+    - generic "Lab panels" [ref=f38e17]:
+      - generic [ref=f38e18]:
+        - generic "Hide Program" [ref=f38e19] [cursor=pointer]:
+          - generic [ref=f38e20]: Program
+          - generic [ref=f38e21]:
+            - button "⌗ Bytes" [ref=f38e22]
+            - button "Assemble ▶" [ref=f38e23]
+          - button "Hide Program" [ref=f38e24]: −
+        - generic [ref=f38e25]:
+          - generic [ref=f38e26]:
+            - generic [ref=f38e27] [cursor=pointer]: "1"
+            - generic [ref=f38e30] [cursor=pointer]: "2"
+            - generic [ref=f38e33] [cursor=pointer]: "3"
+            - generic [ref=f38e36] [cursor=pointer]: "4"
+            - generic "2000H — click to toggle breakpoint" [ref=f38e39] [cursor=pointer]:
+              - generic [ref=f38e41]: "5"
+              - generic [ref=f38e42]: ▶
+            - generic "2002H — click to toggle breakpoint" [ref=f38e43] [cursor=pointer]: "6"
+            - generic "2004H — click to toggle breakpoint" [ref=f38e46] [cursor=pointer]: "7"
+            - generic "2006H — click to toggle breakpoint" [ref=f38e49] [cursor=pointer]: "8"
+            - generic "2008H — click to toggle breakpoint" [ref=f38e52] [cursor=pointer]: "9"
+            - generic [ref=f38e55] [cursor=pointer]: "10"
+          - generic [ref=f38e58]:
+            - button [ref=f38e59] [cursor=pointer]
+            - button [ref=f38e60] [cursor=pointer]
+            - button [ref=f38e61] [cursor=pointer]
+            - button [ref=f38e62] [cursor=pointer]
+            - button "3E 80" [ref=f38e63] [cursor=pointer]
+            - button "D3 83" [ref=f38e64] [cursor=pointer]
+            - button "3E 55" [ref=f38e65] [cursor=pointer]
+            - button "D3 80" [ref=f38e66] [cursor=pointer]
+            - button "76" [ref=f38e67] [cursor=pointer]
+            - button [ref=f38e68] [cursor=pointer]
+          - textbox [ref=f38e69]: "; MicroLab 8085 — write your program here. ; Example: light alternating LEDs on Port A of the 8255 at 80H. ORG 2000H MVI A, 80H ; control word: all ports output OUT 83H MVI A, 55H ; 01010101 pattern OUT 80H HLT"
+        - separator "Resize program editor" [ref=f38e70]
+      - generic [ref=f38e71]:
+        - generic "Hide CPU 8085" [ref=f38e72] [cursor=pointer]:
+          - generic [ref=f38e73]: CPU 8085
+          - button "Hide CPU 8085" [ref=f38e74]: −
+        - generic [ref=f38e75]:
+          - generic [ref=f38e76]:
+            - generic [ref=f38e77]: A
+            - generic [ref=f38e78]: "00"
+          - generic [ref=f38e79]:
+            - generic [ref=f38e80]: B
+            - generic [ref=f38e81]: "00"
+          - generic [ref=f38e82]:
+            - generic [ref=f38e83]: C
+            - generic [ref=f38e84]: "00"
+          - generic [ref=f38e85]:
+            - generic [ref=f38e86]: D
+            - generic [ref=f38e87]: "00"
+          - generic [ref=f38e88]:
+            - generic [ref=f38e89]: E
+            - generic [ref=f38e90]: "00"
+          - generic [ref=f38e91]:
+            - generic [ref=f38e92]: H
+            - generic [ref=f38e93]: "00"
+          - generic [ref=f38e94]:
+            - generic [ref=f38e95]: L
+            - generic [ref=f38e96]: "00"
+        - generic [ref=f38e97]:
+          - generic [ref=f38e98]:
+            - generic [ref=f38e99]: PC
+            - generic [ref=f38e100]: "2000"
+          - generic [ref=f38e101]:
+            - generic [ref=f38e102]: SP
+            - generic [ref=f38e103]: "0000"
+        - generic [ref=f38e104]:
+          - generic [ref=f38e105]: S
+          - generic [ref=f38e106]: Z
+          - generic [ref=f38e107]: AC
+          - generic [ref=f38e108]: P
+          - generic [ref=f38e109]: CY
+        - generic "Instruction at PC" [ref=f38e110]:
+          - code [ref=f38e111]: MVI A,80H
+        - generic [ref=f38e112]: 0 instr · 0 T
+      - generic "Show Memory" [ref=f38e114] [cursor=pointer]:
+        - generic [ref=f38e115]: Memory
+        - generic [ref=f38e117]:
+          - button "◀" [ref=f38e118]
+          - textbox "Page base address (hex)" [ref=f38e119]: "2000"
+          - button "▶" [ref=f38e120]
+        - button "Show Memory" [ref=f38e121]: +
+    - separator "Resize left column" [ref=f38e122]
+    - generic [ref=f38e123]:
+      - generic [ref=f38e129]:
+        - button "−" [ref=f38e130] [cursor=pointer]
+        - generic [ref=f38e131]: 100%
+        - button "+" [ref=f38e132] [cursor=pointer]
+        - button "⤢ Fit" [ref=f38e133] [cursor=pointer]
+      - generic [ref=f38e134]:
+        - generic "Hide Console" [ref=f38e135] [cursor=pointer]:
+          - generic [ref=f38e136]: Console
+          - button "Clear" [ref=f38e138]
+          - button "Hide Console" [ref=f38e139]: −
+        - separator "Resize console" [ref=f38e140]
+        - generic [ref=f38e141]:
+          - generic [ref=f38e142]: MicroLab 8085 ready. Place components, wire them, assemble and run.
+          - generic [ref=f38e143]: Assembled 9 bytes at 2000H (1 segment), program loaded.
+    - separator "Resize right column" [ref=f38e144]
+    - generic "Component panels" [ref=f38e145]:
+      - generic "Show Experiments" [ref=f38e147] [cursor=pointer]:
+        - generic [ref=f38e148]: Experiments
+        - button "Show Experiments" [ref=f38e149]: +
+      - generic "Show Components" [ref=f38e151] [cursor=pointer]:
+        - generic [ref=f38e152]: Components
+        - button "Show Components" [ref=f38e153]: +
+      - generic "Show Inspector" [ref=f38e155] [cursor=pointer]:
+        - generic [ref=f38e156]: Inspector
+        - button "Show Inspector" [ref=f38e157]: +
+      - generic "Show I/O map" [ref=f38e159] [cursor=pointer]:
+        - generic [ref=f38e160]: I/O map
+        - button "Show I/O map" [ref=f38e161]: +
+      - generic [ref=f38e162]:
+        - generic "Hide Diagnostics" [ref=f38e163] [cursor=pointer]:
+          - generic [ref=f38e164]: Diagnostics
+          - generic [ref=f38e165]: 1 problem found
+          - button "Hide Diagnostics" [ref=f38e167]: −
+        - list [ref=f38e168]:
+          - listitem [ref=f38e169]:
+            - generic [aria-hidden] [ref=f38e170]: ✓
+            - generic [ref=f38e171]: Program assembled, entry 2000H.
+          - listitem [ref=f38e172]:
+            - generic [aria-hidden] [ref=f38e173]: •
+            - generic [ref=f38e174]: Program not started yet — press Run (Space).
+          - listitem [ref=f38e175]:
+            - generic [aria-hidden] [ref=f38e176]: ✗
+            - generic [ref=f38e177]: No I/O peripherals — IN/OUT have nowhere to go. Add an 8255.

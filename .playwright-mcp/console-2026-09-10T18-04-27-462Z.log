@@ -1,0 +1,57 @@
+[     110ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:22162
+[  117227ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:22162
+[  117841ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:22162
+[  118106ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:22162
+[  246599ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:22162
+[  507609ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:22162
+[  644325ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:22162
+[  862117ms] ReferenceError: Panel is not defined
+    at MemoryPanel (http://localhost:5199/src/components/ui/MemoryPanel.tsx?t=1789064329393:51:5)
+    at Object.react_stack_bottom_frame (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:20257:20)
+    at renderWithHooks (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:5916:24)
+    at updateFunctionComponent (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:7761:21)
+    at beginWork (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:8841:20)
+    at runWithFiberInDEV (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:1131:72)
+    at performUnitOfWork (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:13596:98)
+    at workLoopSync (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:13459:43)
+    at renderRootSync (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:13443:13)
+    at performWorkOnRoot (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:12859:37)
+[  862115ms] [WARNING] %s
+
+%s
+ An error occurred in the <MemoryPanel> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:7238
+[  879748ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5199/src/components/ui/InspectorPanel.tsx?t=1789064347201:0
+[  879748ms] [ERROR] [vite] Failed to reload /src/components/ui/InspectorPanel.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:5199/@vite/client:808
+[  879855ms] ReferenceError: Panel is not defined
+    at MemoryPanel (http://localhost:5199/src/components/ui/MemoryPanel.tsx?t=1789064329393:51:5)
+    at Object.react_stack_bottom_frame (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:20257:20)
+    at renderWithHooks (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:5916:24)
+    at updateFunctionComponent (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:7761:21)
+    at beginWork (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:8841:20)
+    at runWithFiberInDEV (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:1131:72)
+    at performUnitOfWork (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:13596:98)
+    at workLoopSync (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:13459:43)
+    at renderRootSync (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:13443:13)
+    at performWorkOnRoot (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:12859:37)
+[  879855ms] [WARNING] %s
+
+%s
+ An error occurred in the <MemoryPanel> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:7238
+[  893383ms] ReferenceError: Panel is not defined
+    at MemoryPanel (http://localhost:5199/src/components/ui/MemoryPanel.tsx?t=1789064329393:51:5)
+    at Object.react_stack_bottom_frame (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:20257:20)
+    at renderWithHooks (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:5916:24)
+    at updateFunctionComponent (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:7761:21)
+    at beginWork (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:8841:20)
+    at runWithFiberInDEV (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:1131:72)
+    at performUnitOfWork (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:13596:98)
+    at workLoopSync (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:13459:43)
+    at renderRootSync (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:13443:13)
+    at performWorkOnRoot (http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:12859:37)
+[  893383ms] [WARNING] %s
+
+%s
+ An error occurred in the <MemoryPanel> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=b3e7c3eb:7238
