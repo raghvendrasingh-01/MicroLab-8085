@@ -19,8 +19,7 @@ import { layoutOf, sizeOf, PIN_R } from './geometry';
 import { useUi, type CanvasView } from '../../store/uiStore';
 import type { Component, PinDef } from '../../core/circuit';
 
-const WORLD_W = 2200;
-const WORLD_H = 1400;
+const GRID = 24;
 
 const MIN_SCALE = 0.15;
 const MAX_SCALE = 3;
@@ -268,7 +267,9 @@ export function CircuitCanvas(): React.JSX.Element {
     if (!drag) return;
     const onMove = (e: PointerEvent) => {
       const p = toWorld(e.clientX, e.clientY);
-      moveComponent(drag.id, Math.max(0, p.x - drag.dx), Math.max(0, p.y - drag.dy));
+      // No world-bounds clamp: the grid follows the view, so the canvas is
+      // unbounded in every direction.
+      moveComponent(drag.id, p.x - drag.dx, p.y - drag.dy);
     };
     const onUp = () => setDrag(null);
     window.addEventListener('pointermove', onMove);
@@ -454,14 +455,33 @@ export function CircuitCanvas(): React.JSX.Element {
         </defs>
 
         <g className="world" transform={`translate(${view.x} ${view.y}) scale(${view.scale})`}>
-          {/* document background + grid */}
-          <rect
-            className="world-bg"
-            width={WORLD_W}
-            height={WORLD_H}
-            fill="url(#grid)"
-            onPointerDown={onBackgroundPointerDown}
-          />
+          {/* document background + grid — covers whatever is currently
+              visible (computed in world coords), so the world is effectively
+              unbounded. Snapped to the grid pitch so dots don't crawl. */}
+          {(() => {
+            const cw = containerRef.current?.clientWidth ?? 800;
+            const ch = containerRef.current?.clientHeight ?? 600;
+            const snapDown = (v: number) => Math.floor(v / GRID) * GRID;
+            const snapUp = (v: number) => Math.ceil(v / GRID) * GRID;
+            // Pad a full screen in each direction: the SVG clips to its own
+            // bounds so over-covering is free, and it keeps the grid covering
+            // the viewport through container resizes that don't move the view.
+            const x0 = snapDown(-view.x / view.scale) - cw / view.scale;
+            const y0 = snapDown(-view.y / view.scale) - ch / view.scale;
+            const x1 = snapUp((cw - view.x) / view.scale) + cw / view.scale;
+            const y1 = snapUp((ch - view.y) / view.scale) + ch / view.scale;
+            return (
+              <rect
+                className="world-bg"
+                x={x0}
+                y={y0}
+                width={x1 - x0}
+                height={y1 - y0}
+                fill="url(#grid)"
+                onPointerDown={onBackgroundPointerDown}
+              />
+            );
+          })()}
 
           {/* wires (below cards) */}
           <g>

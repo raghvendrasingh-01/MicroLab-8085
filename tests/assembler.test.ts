@@ -267,4 +267,96 @@ describe('instance reuse', () => {
     expect(third.errors).toHaveLength(0);
     expect(third.segments[0]!.bytes).toEqual([0x00]);
   });
+
+  it('each assemble returns a fresh listing array (UI memo identity)', () => {
+    const asm = new Assembler();
+    const first = asm.assemble('MVI A, 11H\nOUT 80H\nHLT');
+    const second = asm.assemble('MVI A, 66H\nOUT 82H\nHLT');
+
+    // The store's listing is a useMemo dependency in CodePanel: a reused array
+    // reference never invalidates the memo, so the opcode column keeps showing
+    // the previous program's bytes after re-assembly.
+    expect(second.listing).not.toBe(first.listing);
+    expect(second.listing.map((l) => ({ line: l.line, addr: l.addr, bytes: l.bytes }))).toEqual([
+      { line: 1, addr: 0, bytes: [0x3e, 0x66] },
+      { line: 2, addr: 2, bytes: [0xd3, 0x82] },
+      { line: 3, addr: 4, bytes: [0x76] },
+    ]);
+  });
+});
+
+describe('assembler label/expression resolution', () => {
+  it('resolves a forward-referenced ORG through an EQU (label addresses follow)', () => {
+    const asm = new Assembler();
+    const r = asm.assemble(`
+      ORG LOAD
+      LOAD EQU 8000H
+      START: MVI A, 1
+      JMP START
+    `);
+    expect(r.errors).toEqual([]);
+    expect(r.ok).toBe(true);
+    // Code placed at 8000H and START resolves to 8000H, not 0000H.
+    expect(r.segments).toEqual([{ start: 0x8000, bytes: [0x3e, 0x01, 0xc3, 0x00, 0x80] }]);
+    expect(r.symbols.START).toBe(0x8000);
+  });
+
+  it('a label made of hex digits resolves as a label, not a number', () => {
+    const asm = new Assembler();
+    const r = asm.assemble(`
+      ORG 2000H
+      FEEDH: MVI A, 1
+      JMP FEEDH
+    `);
+    expect(r.errors).toEqual([]);
+    expect(r.ok).toBe(true);
+    // JMP must encode the label's address 2000H, not the number 0xFEED.
+    expect(r.segments[0]!.bytes).toEqual([0x3e, 0x01, 0xc3, 0x00, 0x20]);
+    expect(r.symbols.FEEDH).toBe(0x2000);
+  });
+
+  it('letter-leading hex literals are accepted as hex numbers', () => {
+    const asm = new Assembler();
+    const r = asm.assemble('MVI A, FEH');
+    expect(r.errors).toEqual([]);
+    // FFH/FEH etc. are accepted (educational kits write them this way);
+    // a defined label still wins over the same-looking hex (see below).
+    expect(r.segments[0]!.bytes).toEqual([0x3e, 0xfe]);
+
+    const r2 = asm.assemble('MVI A, FFH\nOUT 82H');
+    expect(r2.errors).toEqual([]);
+    expect(r2.segments[0]!.bytes).toEqual([0x3e, 0xff, 0xd3, 0x82]);
+  });
+
+  it('a label still wins over a letter-leading hex literal in EQU operands', () => {
+    const asm = new Assembler();
+    const r = asm.assemble(`
+      ORG 2000H
+      FEEDH: NOP
+      X EQU FEEDH
+      JMP X
+    `);
+    expect(r.errors).toEqual([]);
+    // X must be the label address 2000H, not the number 0xFEED.
+    expect(r.symbols.X).toBe(0x2000);
+  });
+
+  it('DS with a forward-referenced EQU size keeps later labels aligned', () => {
+    const asm = new Assembler();
+    const r = asm.assemble(`
+      ORG 2000H
+      BUF: DS SIZE
+      SIZE EQU 10H
+      START: NOP
+      JMP START
+    `);
+    expect(r.errors).toEqual([]);
+    expect(r.ok).toBe(true);
+    // START must sit after the 16-byte buffer at 2010H.
+    expect(r.symbols.START).toBe(0x2010);
+    expect(r.segments).toEqual([
+      { start: 0x2000, bytes: Array(16).fill(0) },
+      { start: 0x2010, bytes: [0x00, 0xc3, 0x10, 0x20] }, // NOP; JMP START → 2010H
+    ]);
+  });
 });

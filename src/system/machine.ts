@@ -39,6 +39,9 @@ export class Machine {
   /** Cumulative counters for the status bar. */
   totalInstructions = 0;
   totalTstates = 0;
+  /** PC of the breakpoint we are currently paused ON. Resuming executes it
+   *  instead of pausing on it a second time. */
+  private pausedAtBreakpoint: number | null = null;
 
   constructor() {
     this.cpu = new Cpu8085(
@@ -86,13 +89,27 @@ export class Machine {
   stepInstruction(): boolean {
     if (this.runState === 'halted') return false;
     try {
+      // Breakpoint at the current PC: pause BEFORE executing, so a
+      // breakpoint on the entry point stops there instead of sailing past
+      // the first instruction. Resuming from that pause executes it.
+      if (this.breakpoints.has(this.cpu.pc)) {
+        if (this.pausedAtBreakpoint !== this.cpu.pc) {
+          this.pausedAtBreakpoint = this.cpu.pc;
+          this.runState = 'paused';
+          return true;
+        }
+        this.pausedAtBreakpoint = null; // we are resuming: execute it
+      }
       const ts = this.cpu.step();
       this.totalInstructions++;
       this.totalTstates += ts;
       this.tickPeripherals(ts);
       this.circuit.propagate();
       if (this.cpu.halted) this.runState = 'halted';
-      else if (this.breakpoints.has(this.cpu.pc)) this.runState = 'paused';
+      else if (this.breakpoints.has(this.cpu.pc)) {
+        this.pausedAtBreakpoint = this.cpu.pc;
+        this.runState = 'paused';
+      }
       return true;
     } catch (err) {
       if (err instanceof CpuError) {
@@ -118,6 +135,7 @@ export class Machine {
     this.cpu.reset();
     this.io.clearConflicts();
     this.errors = [];
+    this.pausedAtBreakpoint = null;
     for (const c of this.circuit.components.values()) c.reset();
     this.circuit.propagate();
     if (!keepMemory) {
@@ -134,15 +152,18 @@ export class Machine {
 
   /** Load assembler output into memory. */
   loadProgram(segments: Array<{ start: number; bytes: number[] }>, entry: number | null): void {
+    // Loading a new program invalidates the previous one entirely — even a
+    // zero-byte result must clear the stale entry, never re-run old code.
+    this.entryPoint = null;
+    this.cpu.pc = 0x0000;
+    this.cpu.halted = false;
     for (const seg of segments) this.memory.load(seg.start, seg.bytes);
-    // No explicit ORG/END entry: start where the program is placed — never
-    // leave a stale entry pointing at a previously loaded program.
+    // No explicit ORG/END entry: start where the program is placed.
     const e = entry ?? segments[0]?.start ?? null;
     if (e !== null) {
       this.entryPoint = e;
       this.cpu.pc = e;
     }
-    this.cpu.halted = false;
     this.circuit.propagate(); // inputs (switches…) may now be readable
   }
 

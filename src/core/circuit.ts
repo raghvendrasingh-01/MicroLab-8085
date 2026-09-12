@@ -124,14 +124,18 @@ export class Circuit {
   }
 
   remove(id: string): void {
-    this.components.delete(id);
-    // Drop dangling wires.
+    // Pull the surviving endpoints of this component's wires low first —
+    // an input pin whose driver disappeared must not freeze at its last
+    // wire-copied value (the same "quiet net" rule propagate() enforces).
     for (let i = this.connections.length - 1; i >= 0; i--) {
       const w = this.connections[i]!;
+      if (w.fromComponent === id) this.pullLowIfInput(w.toComponent, w.toPin);
+      if (w.toComponent === id) this.pullLowIfInput(w.fromComponent, w.fromPin);
       if (w.fromComponent === id || w.toComponent === id) {
         this.connections.splice(i, 1);
       }
     }
+    this.components.delete(id);
   }
 
   get(id: string): Component | undefined {
@@ -184,7 +188,26 @@ export class Circuit {
 
   disconnect(connId: string): void {
     const i = this.connections.findIndex((w) => w.id === connId);
-    if (i >= 0) this.connections.splice(i, 1);
+    if (i < 0) return;
+    const w = this.connections[i]!;
+    // Undriven nets pull low (a surviving wire that still drives an endpoint
+    // restores its value on the next propagate()).
+    this.pullLowIfInput(w.fromComponent, w.fromPin);
+    this.pullLowIfInput(w.toComponent, w.toPin);
+    this.connections.splice(i, 1);
+  }
+
+  /** Zero a pin and notify its component, unless the component drives it. */
+  private pullLowIfInput(compId: string, pinId: string): void {
+    const c = this.components.get(compId);
+    if (!c || effectiveDir(c, pinId) === 'out') return;
+    const p = c.getPin(pinId);
+    if (!p) return;
+    if (p.digital !== 0 || p.analog !== undefined) {
+      p.digital = 0;
+      p.analog = undefined;
+      c.onPinChange(pinId);
+    }
   }
 
   /**

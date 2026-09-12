@@ -97,8 +97,12 @@ function fmt(v: number): string {
 export class Assembler {
   private readonly errors: AsmError[] = [];
   private readonly symbols = new Map<string, number>();
+  /** Source line that defined each symbol (duplicate detection). */
+  private readonly symbolDefLine = new Map<string, number>();
   private readonly lines: ParsedLine[] = [];
   private readonly listing: ListingEntry[] = [];
+  /** Per-line byte count computed in pass 1 (layout-drift guard for pass 2). */
+  private readonly lineSizes: number[] = [];
   private entry: number | null = null;
   private passNum: 1 | 2 = 1;
 
@@ -107,10 +111,13 @@ export class Assembler {
     // accumulated state so a second assembly doesn't append to the first.
     this.errors.length = 0;
     this.symbols.clear();
+    this.symbolDefLine.clear();
     this.lines.length = 0;
     this.listing.length = 0;
+    this.lineSizes.length = 0;
     this.entry = null;
     this.parse(source);
+    this.predefineEqu();
     this.pass1();
     const segments = this.pass2();
     return {
@@ -119,7 +126,11 @@ export class Assembler {
       segments,
       entry: this.entry,
       symbols: Object.fromEntries(this.symbols),
-      listing: this.listing,
+      // Fresh array per call: the store publishes this straight into state,
+      // where it is a useMemo dependency in CodePanel — reusing the internal
+      // (cleared-and-refilled) array would leave the opcode column frozen on
+      // the previous program after re-assembly.
+      listing: [...this.listing],
     };
   }
 
@@ -244,6 +255,36 @@ export class Assembler {
 
   /* ---------------- pass 1: labels + addresses ---------------- */
 
+  /**
+   * Pre-scan: resolve EQU values before pass 1 so a forward-referenced
+   * operand (`ORG LOAD` before `LOAD EQU 8000H`, `DS SIZE` before its EQU)
+   * gets the real value when pass 1 lays out labels. EQUs referencing other
+   * EQUs resolve by iteration to a fixed point.
+   */
+  private predefineEqu(): void {
+    for (let iter = 0; iter < 10; iter++) {
+      let changed = false;
+      for (const ln of this.lines) {
+        if (ln.mnemonic !== 'EQU' || !ln.label || ln.operands.length !== 1) continue;
+        const key = ln.label.toUpperCase();
+        if (this.symbols.has(key)) continue;
+        const t = ln.operands[0]!.trim().toUpperCase();
+        // Symbol first, number second — same order as evalExpr, so an EQU
+        // referencing a label that looks like hex (FEEDH) resolves to the
+        // label, not the number 0xFEED.
+        const sym = this.symbols.get(t);
+        const num = sym === undefined ? parseNumber(t) : null;
+        const v = sym ?? (num !== null ? num : undefined);
+        if (v !== undefined) {
+          this.symbols.set(key, v);
+          this.symbolDefLine.set(key, ln.lineNo);
+          changed = true;
+        }
+      }
+      if (!changed) return;
+    }
+  }
+
   private pass1(): void {
     // pass2() leaves passNum at 2 and the store reuses this instance across
     // assemblies — reset it, or pass 1 runs with pass-2 semantics: the ORG
@@ -253,25 +294,32 @@ export class Assembler {
     for (const ln of this.lines) {
       if (ln.label) {
         const key = ln.label.toUpperCase();
-        if (this.symbols.has(key)) {
-          // Note: EQU overwrites its own line's label legitimately — that
-          // happens inside processDirective below, after this check, and
-          // redefinition there is detected by the same has() test only on
-          // later lines.
+        // Pre-scan EQUs are defined by their own line — reprocessing that
+        // line is not a redefinition. Anything else already present is.
+        const definedAt = this.symbolDefLine.get(key);
+        if (definedAt !== undefined && definedAt !== ln.lineNo) {
           this.errors.push({ line: ln.lineNo, message: `Duplicate label "${ln.label}".` });
-        } else {
+        } else if (definedAt === undefined) {
           this.symbols.set(key, pc);
+          this.symbolDefLine.set(key, ln.lineNo);
         }
+        // A pre-scanned EQU label keeps its value; the EQU directive below
+        // re-evaluates and overwrites it on its own line.
       }
-      if (!ln.mnemonic) continue;
+      if (!ln.mnemonic) {
+        this.lineSizes.push(0);
+        continue;
+      }
 
       const d = this.processDirective(ln, pc);
       if (d.kind === 'handled') {
         pc = d.pc;
+        this.lineSizes.push(0);
         continue;
       }
 
       const size = this.lineSize(ln.mnemonic, ln.operands, ln.lineNo);
+      this.lineSizes.push(size);
       pc = (pc + size) & 0xffff;
     }
   }
@@ -309,7 +357,8 @@ export class Assembler {
       pc = (pc + 1) & 0xffff;
     };
 
-    for (const ln of this.lines) {
+    for (let li = 0; li < this.lines.length; li++) {
+      const ln = this.lines[li]!;
       const startAddr = pc;
       let emittedThisLine = 0;
 
@@ -357,6 +406,18 @@ export class Assembler {
           for (const b of this.encode(mn, ln.operands, ln.lineNo)) { emit(b); emittedThisLine++; }
       }
 
+      const expected = this.lineSizes[li] ?? 0;
+      // Only the "emitted more than reserved" direction is silent corruption
+      // (labels shift, everything still assembles); emitting less always
+      // comes with its own diagnostic (undefined symbol, range error, …).
+      if (emittedThisLine > expected) {
+        this.fail(
+          ln.lineNo,
+          `Pass mismatch: line emitted ${emittedThisLine} bytes but pass 1 reserved ${expected} — ` +
+            'a forward-referenced expression changed the layout; define it before use.',
+        );
+      }
+
       const lastSeg = segments[segments.length - 1];
       const bytes =
         emittedThisLine > 0 && lastSeg
@@ -387,10 +448,13 @@ export class Assembler {
     const ch = /^'([^'])'$/.exec(text.trim());
     if (ch) return ch[1]!.charCodeAt(0) & 0xff;
 
+    // Symbol lookup comes first: a label made of hex digits (FEEDH, BCH)
+    // must resolve as a label, not a number.
+    if (this.symbols.has(t)) return this.symbols.get(t)!;
+
     const num = parseNumber(t);
     if (num !== null) return num;
 
-    if (this.symbols.has(t)) return this.symbols.get(t)!;
     if (this.passNum === 1) return 0; // dummy: sizing must tolerate forward refs
     this.fail(lineNo, `Undefined symbol "${text.trim()}".`);
     return null;
@@ -599,6 +663,9 @@ function splitOperands(s: string): string[] {
 }
 
 function parseNumber(t: string): number | null {
+  // Hex accepts letter-leading forms too (FFH, FEH — the way students and
+  // educational kits write them). Labels still win: callers resolve symbols
+  // before falling back to this, so `FEEDH` as a label stays a label.
   if (/^[0-9A-F]+H$/.test(t)) return parseInt(t.slice(0, -1), 16);
   if (/^0X[0-9A-F]+$/.test(t)) return parseInt(t.slice(2), 16);
   if (/^[01]+B$/.test(t)) return parseInt(t.slice(0, -1), 2);

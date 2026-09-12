@@ -4,7 +4,7 @@
  * location marked, and the focused source line's bytes highlighted
  * (click a line's bytes in the editor to see where it landed).
  */
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { machine, useLab, hex4 } from '../../store/labStore';
 import { Panel } from './Panel';
 
@@ -14,6 +14,17 @@ export function MemoryPanel(): React.JSX.Element {
   const setMemoryBase = useLab((s) => s.setMemoryBase);
   const focusLine = useLab((s) => s.focusLine);
   const listing = useLab((s) => s.listing);
+
+  /** Text being typed into the page-base field; null = not editing. Lets the
+   *  user clear the field and type a partial hex value without it snapping
+   *  back to the committed base on every keystroke. */
+  const [baseDraft, setBaseDraft] = useState<string | null>(null);
+  const commitBase = () => {
+    if (baseDraft === null) return;
+    const m = /^([0-9a-f]{1,4})h?$/i.exec(baseDraft.trim());
+    if (m && m[1]) setMemoryBase(parseInt(m[1], 16));
+    setBaseDraft(null);
+  };
 
   /** Address range of the focused source line (from the last assembly). */
   const focusRange = useMemo(() => {
@@ -79,12 +90,22 @@ export function MemoryPanel(): React.JSX.Element {
           </button>
           <input
             className="mem-goto"
-            value={hex4(base)}
-            onChange={(e) => {
-              const m = /^([0-9a-f]{1,4})h?$/i.exec(e.target.value.trim());
-              if (m && m[1]) setMemoryBase(parseInt(m[1], 16));
+            value={baseDraft ?? hex4(base)}
+            onChange={(e) => setBaseDraft(e.target.value)}
+            onBlur={commitBase}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') commitBase();
+              if (e.key === 'Escape') setBaseDraft(null);
             }}
-            title="Page base address (hex)"
+            onFocus={(e) => e.target.select()}
+            // A click's native caret placement (the mouseup default action)
+            // would override the focus-select; suppress it so the whole value
+            // stays selected and typing replaces it.
+            onMouseUp={(e) => {
+              e.preventDefault();
+              e.currentTarget.select();
+            }}
+            title="Page base address (hex) — Enter to apply"
           />
           <button type="button" className="btn btn-small" onClick={() => setMemoryBase(base + 0x100)} title="Next page">
             ▶

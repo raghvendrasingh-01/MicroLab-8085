@@ -183,12 +183,23 @@ describe('arithmetic', () => {
     expect(cpu.fCY).toBe(true); // unchanged
   });
 
-  it('DCR from zero wraps to FF, AC set', () => {
+  it('DCR from zero wraps to FF, AC clear (no carry out of bit 3 of v+FE+1)', () => {
     const { cpu } = makeCpu([0x3e, 0x00, 0x3d]);
     cpu.step(); cpu.step();
     expect(cpu.a).toBe(0xff);
-    expect(cpu.fAC).toBe(true);
+    expect(cpu.fAC).toBe(false);
     expect(cpu.fS).toBe(true);
+  });
+
+  it('DCR AC matches an equivalent SUI 1', () => {
+    // 12H - 1: low nibble 2+0xE+1 = 11H → carry out of bit 3 → AC set.
+    const dcr = makeCpu([0x3e, 0x12, 0x3d]);
+    dcr.cpu.step(); dcr.cpu.step();
+    const sui = makeCpu([0x3e, 0x12, 0xd6, 0x01]);
+    sui.cpu.step(); sui.cpu.step();
+    expect(dcr.cpu.a).toBe(sui.cpu.a);
+    expect(dcr.cpu.fAC).toBe(sui.cpu.fAC);
+    expect(dcr.cpu.fAC).toBe(true);
   });
 
   it('INX/DCX do not affect flags', () => {

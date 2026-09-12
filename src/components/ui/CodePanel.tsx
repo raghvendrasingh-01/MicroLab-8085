@@ -148,7 +148,60 @@ export function CodePanel(): React.JSX.Element {
             if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
               e.preventDefault();
               assemble();
+              return;
             }
+            if (e.key !== 'Tab' || e.ctrlKey || e.metaKey || e.altKey) return;
+            e.preventDefault();
+            const ta = e.currentTarget;
+            const { selectionStart: s, selectionEnd: en, value } = ta;
+            if (s === en && !e.shiftKey) {
+              // Caret Tab: insert indentation natively so the browser's
+              // undo stack keeps working.
+              document.execCommand('insertText', false, '    ');
+              return;
+            }
+            // Indent / outdent the touched lines (VS Code style).
+            const IND = '    ';
+            const ls = value.lastIndexOf('\n', s - 1) + 1;
+            const nl = value.indexOf('\n', en);
+            const end = nl === -1 ? value.length : nl;
+            const oldLines = value.slice(ls, end).split('\n');
+            const mapped = oldLines.map((line) => {
+              if (e.shiftKey) {
+                const cut = /^(?:\t| {1,4})/.exec(line)?.[0]?.length ?? 0;
+                return { t: line.slice(cut), cut };
+              }
+              return { t: IND + line, cut: -IND.length };
+            });
+            const newBlock = mapped.map((m) => m.t).join('\n');
+            if (newBlock === value.slice(ls, end)) return; // nothing to outdent
+            /** Map a caret position in the old text to the new text. */
+            const mapPos = (p: number): number => {
+              if (p <= ls) return p;
+              let np = ls;
+              let pos = ls;
+              for (let i = 0; i < oldLines.length; i++) {
+                const lineEnd = pos + oldLines[i]!.length;
+                if (p > lineEnd) {
+                  np += mapped[i]!.t.length + 1;
+                  pos = lineEnd + 1;
+                  continue;
+                }
+                const c = p - pos; // column within the line
+                const { cut } = mapped[i]!;
+                return np + (cut < 0 ? c - cut : c <= cut ? 0 : c - cut);
+              }
+              return ls + newBlock.length;
+            };
+            setSource(value.slice(0, ls) + newBlock + value.slice(end));
+            // The controlled re-render resets the caret; restore the mapped
+            // selection after React commits (double rAF crosses the commit).
+            requestAnimationFrame(() =>
+              requestAnimationFrame(() => {
+                ta.selectionStart = mapPos(s);
+                ta.selectionEnd = mapPos(en);
+              }),
+            );
           }}
         />
       </div>

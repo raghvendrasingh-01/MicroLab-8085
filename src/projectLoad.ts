@@ -27,29 +27,41 @@ const hex2 = (v: number): string => v.toString(16).toUpperCase().padStart(2, '0'
 
 /** Clear the machine's circuit and rebuild it from `file`. */
 export function instantiateProject(machine: Machine, file: ProjectFile): InstantiateResult {
-  // Wipe everything from the previous bench.
-  for (const id of [...machine.circuit.components.keys()]) machine.removeComponent(id);
-  machine.io.clearConflicts();
-  machine.breakpoints.clear();
-
   const errors: string[] = [];
   const warnings: string[] = [];
-  const byIndex: (Component | null)[] = [];
 
-  for (const spec of file.components) {
-    const meta = metaFor(spec.type);
+  // Build and validate everything BEFORE touching the bench so a malformed
+  // project file can never destroy the user's existing circuit (atomic load).
+  const built: Array<{ c: Component; p: Peripheral | null }> = [];
+  const byIndex: (Component | null)[] = [];
+  for (const spec of file.components ?? []) {
+    const meta = metaFor(spec?.type);
     if (!meta) {
-      errors.push(`Project references unknown component type "${spec.type}" — skipped.`);
+      errors.push(`Project references unknown component type "${spec?.type}" — skipped.`);
       byIndex.push(null);
       continue;
     }
     const id = `${spec.type}#${projectSeq++}`;
-    const c = meta.create(id, spec.x, spec.y);
-    c.label = spec.label;
-    c.setConfig(spec.config);
+    const c = meta.create(id, spec.x ?? 0, spec.y ?? 0);
+    c.label = typeof spec.label === 'string' && spec.label ? spec.label : c.label;
+    try {
+      c.setConfig(spec.config ?? {});
+    } catch {
+      errors.push(`Component "${c.label}" (${spec.type}) has an invalid configuration — skipped.`);
+      byIndex.push(null);
+      continue;
+    }
+    built.push({ c, p: isPeripheral(c) ? (c as Peripheral) : null });
     byIndex.push(c);
-    if (isPeripheral(c)) {
-      const p = c as Peripheral;
+  }
+
+  // Commit: wipe the old bench, then install the freshly built circuit.
+  for (const id of [...machine.circuit.components.keys()]) machine.removeComponent(id);
+  machine.io.clearConflicts();
+  machine.breakpoints.clear();
+
+  for (const { c, p } of built) {
+    if (p) {
       if (!machine.io.register(p)) {
         const free = machine.io.freeWindow(p.addressCount);
         p.baseAddress = free;
@@ -62,7 +74,7 @@ export function instantiateProject(machine: Machine, file: ProjectFile): Instant
 
   let wires = 0;
   let failed = 0;
-  for (const w of file.connections) {
+  for (const w of file.connections ?? []) {
     const a = byIndex[w.fromIndex];
     const b = byIndex[w.toIndex];
     if (!a || !b) continue;
@@ -76,7 +88,7 @@ export function instantiateProject(machine: Machine, file: ProjectFile): Instant
     );
   }
   machine.circuit.propagate();
-  machine.reset(true); // keep memory, restore PC
+  machine.reset(false); // fresh program: clear memory too (see below)
 
   return { ok: errors.length === 0, wires, errors, warnings, byIndex };
 }

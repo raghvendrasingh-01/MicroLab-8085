@@ -42,6 +42,9 @@ export class Cpu8085 {
   // sources are modeled, the one-instruction delay is unobservable.
   private eiPending = false;
   private diPending = false;
+  /** Set by isa.ts conditional-branch handlers; read in step() to pick the
+   *  taken T-state count. Exposed on the ExecContext via the cast. */
+  branchTaken = false;
   tstates = 0;
   instructions = 0;
   sid: 0 | 1 = 0;
@@ -62,6 +65,7 @@ export class Cpu8085 {
     this.halted = false;
     this.iff = false;
     this.eiPending = this.diPending = false;
+    this.branchTaken = false;
     this.tstates = 0;
     this.instructions = 0;
     this.sid = 0;
@@ -104,11 +108,15 @@ export class Cpu8085 {
     // EI/DI take effect after the instruction following them.
     this.eiPending = false;
     this.diPending = false;
+    this.branchTaken = false;
 
     const opAddr = this.pc;
     const opcode = this.readMem8(opAddr);
     const info = OPCODES[opcode];
     if (!info) {
+      // Skip the invalid byte so the debugger can continue past it —
+      // otherwise PC freezes on the bad opcode and every Step re-throws.
+      this.pc = (opAddr + 1) & 0xffff;
       throw new CpuError(
         `Invalid opcode ${opcode.toString(16).toUpperCase().padStart(2, '0')}H at ${opAddr.toString(16).toUpperCase().padStart(4, '0')}H`,
         opAddr,
@@ -118,7 +126,9 @@ export class Cpu8085 {
     info.exec(this.ctx);
 
     this.instructions++;
-    this.tstates += info.tstates;
+    // Conditional branches cost more when taken (10/18/12 vs 7/9/6 T-states).
+    const cycles = this.branchTaken ? (info.tstatesTaken ?? info.tstates) : info.tstates;
+    this.tstates += cycles;
     if (this.eiPending) {
       this.iff = true;
       this.eiPending = false;
@@ -127,7 +137,7 @@ export class Cpu8085 {
       this.iff = false;
       this.diPending = false;
     }
-    return info.tstates;
+    return cycles;
   }
 
   private readonly ctx: ExecContext = this.makeCtx();

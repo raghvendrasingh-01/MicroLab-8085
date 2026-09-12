@@ -178,6 +178,12 @@ export const useLab = create<LabState>((set, get) => {
   };
 
   const assemble = (): boolean => {
+    // Cancel any pending live preview — its (stale) result must not overwrite
+    // the outcome of this explicit assemble.
+    if (previewTimer !== null) {
+      clearTimeout(previewTimer);
+      previewTimer = null;
+    }
     const src = get().source;
     const r = assembler.assemble(src);
     set({ asmErrors: r.errors, asmOk: r.ok, listing: r.listing });
@@ -195,6 +201,29 @@ export const useLab = create<LabState>((set, get) => {
     );
     bump();
     return true;
+  };
+
+  /** Debounce handle for the live preview assembly in setSource. */
+  let previewTimer: ReturnType<typeof setTimeout> | null = null;
+
+  /**
+   * Live preview: assemble the editor contents while typing (VS Code style)
+   * so opcodes per line and error highlighting appear without pressing
+   * Assemble. Preview only updates the listing/errors shown in the editor —
+   * it never loads memory, so a half-typed program can't disturb the machine.
+   */
+  const schedulePreview = () => {
+    if (previewTimer !== null) clearTimeout(previewTimer);
+    previewTimer = setTimeout(() => {
+      previewTimer = null;
+      // Only preview when there is something to show for it. An empty
+      // editor keeps the last listing (and the loaded program) untouched.
+      if (get().source.trim() === '') return;
+      const r = assembler.assemble(get().source);
+      // Don't clobber a successful load's state with a half-typed error —
+      // but DO show the errors live (that's the point of the preview).
+      set({ asmErrors: r.errors, asmOk: r.ok, listing: r.listing });
+    }, 250);
   };
 
   /** Assemble if the editor changed since the last successful load. */
@@ -224,7 +253,10 @@ export const useLab = create<LabState>((set, get) => {
     activeExperiment: null,
     viewEpoch: 0,
 
-    setSource: (text) => set({ source: text }),
+    setSource: (text) => {
+      set({ source: text });
+      schedulePreview();
+    },
 
     assemble,
 
@@ -511,7 +543,9 @@ export const useLab = create<LabState>((set, get) => {
       bump();
     },
 
-    setMemoryBase: (base) => set({ memoryBase: base & 0xff00 }),
+    // 16-bit mask only: an in-progress value typed into the goto field (e.g.
+    // "3" on the way to 3000H) must survive; page alignment is not forced.
+    setMemoryBase: (base) => set({ memoryBase: base & 0xffff }),
 
     setFocusLine: (line) => set({ focusLine: line }),
 
@@ -557,6 +591,13 @@ export const useLab = create<LabState>((set, get) => {
       stopRunLoop();
       warnedComponents.clear();
       const r = instantiateProject(machine, file);
+      // The project mints ids from its own counter — keep the palette's
+      // counter past every loaded id or a later palette add could collide
+      // with one (circuit.add's Map.set would silently replace it).
+      for (const c of machine.circuit.components.values()) {
+        const m = /#(\d+)$/.exec(c.id);
+        if (m) componentSeq = Math.max(componentSeq, Number(m[1]) + 1);
+      }
       for (const e of r.errors) log('error', e);
       for (const w of r.warnings) log('warn', w);
 
@@ -665,18 +706,19 @@ export const useLab = create<LabState>((set, get) => {
     exportProject: () => JSON.stringify(get().serializeProject('MicroLab 8085 project'), null, 2),
 
     importProject: (json) => {
+      let file: ProjectFile | null = null;
       try {
-        const file = JSON.parse(json) as ProjectFile;
-        if (file.format !== 'microlab-8085-project' || !Array.isArray(file.components)) {
-          log('error', 'Not a MicroLab 8085 project file.');
-          return false;
-        }
-        get().loadProjectFile(file);
-        return true;
+        file = JSON.parse(json) as ProjectFile;
       } catch {
         log('error', 'Could not parse the file as JSON.');
         return false;
       }
+      if (!file || file.format !== 'microlab-8085-project' || !Array.isArray(file.components)) {
+        log('error', 'Not a MicroLab 8085 project file.');
+        return false;
+      }
+      get().loadProjectFile(file);
+      return true;
     },
   };
 

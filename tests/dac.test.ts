@@ -231,7 +231,7 @@ describe('DAC + scope through the CPU', () => {
         OUT 80H      ; 1.25 V
         MVI A,80H
         OUT 80H      ; 2.50 V
-        MVI A,C0H
+        MVI A,0C0H
         OUT 80H      ; 3.75 V
         HLT`;
     const r = new Assembler().assemble(src);

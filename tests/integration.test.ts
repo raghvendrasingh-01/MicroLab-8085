@@ -184,9 +184,9 @@ describe('wiring rules', () => {
 
     machine.circuit.disconnect(w.id);
     machine.circuit.propagate();
-    // The pin keeps its last value (no driver) — reading still reflects the pin.
-    // Real hardware would float; we hold last state, documented simplification.
-    expect(ppi.ioRead(0x80) & 1).toBe(1);
+    // The undriven net pulls low — the pin reads 0, not the last wire-copied
+    // value (quiet-net rule, same as an in-in wire with no driver).
+    expect(ppi.ioRead(0x80) & 1).toBe(0);
   });
 
   it('I/O address conflicts are detected and reported', () => {

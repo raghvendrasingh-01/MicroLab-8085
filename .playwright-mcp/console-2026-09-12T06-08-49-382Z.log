@@ -1,0 +1,17 @@
+[      70ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:22162
+[  135289ms] ReferenceError: WORLD_W is not defined
+    at CircuitCanvas (http://localhost:5173/src/components/ui/CircuitCanvas.tsx?t=1789193464575:378:28)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:20257:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:5916:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:7761:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:8841:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:1131:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:13596:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:13459:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:13443:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:12859:37)
+[  135286ms] [WARNING] %s
+
+%s
+ An error occurred in the <CircuitCanvas> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=f5dac961:7238

@@ -40,6 +40,9 @@ export interface ExecContext {
    *  instruction later). */
   eiPending: boolean;
   diPending: boolean;
+  /** Set by conditional-branch handlers when the branch was taken, so the
+   *  CPU wrapper can charge the taken T-state count. */
+  branchTaken: boolean;
 }
 
 export interface OpcodeInfo {
@@ -221,7 +224,9 @@ function aluInr(ctx: ExecContext, v: number): number {
 
 function aluDcr(ctx: ExecContext, v: number): number {
   const r = (v - 1) & 0xff;
-  ctx.fAC = (v & 0xf) === 0x0;
+  // Same internal add as aluSub(v-1): v + 0xFE + 1. AC = carry out of bit 3,
+  // i.e. (v&0xf) + 0xE + 1 > 0xf, which simplifies to (v & 0xf) !== 0.
+  ctx.fAC = (v & 0xf) !== 0;
   setZSP(ctx, r);
   return r; // CY unchanged
 }
@@ -301,7 +306,8 @@ def(
 def(
   0x30, 'SIM', 1, 4,
   (ctx) => {
-    if ((ctx.a & 0x80) !== 0) ctx.setSod(((ctx.a >> 6) & 1) as 0 | 1);
+    // Serial output: bit 6 (SDE) enables the write, bit 7 (SOD) is the data.
+    if ((ctx.a & 0x40) !== 0) ctx.setSod(((ctx.a >> 7) & 1) as 0 | 1);
     // Interrupt masks (RST 7.5/6.5/5.5) are not modeled — documented simplification.
   },
   () => 'SIM',
@@ -495,7 +501,7 @@ for (let cc = 0; cc < 8; cc++) {
   const name = COND_NAMES[cc]!;
   def(
     code, `J${name}`, 3, 7,
-    (ctx) => { const a = fetch16(ctx); if (cond(ctx, cc)) ctx.pc = a; },
+    (ctx) => { const a = fetch16(ctx); if (cond(ctx, cc)) { ctx.pc = a; ctx.branchTaken = true; } },
     (b) => `J${name} ${hex4(b[1]! | (b[2]! << 8))}H`,
     10,
   );
@@ -508,7 +514,7 @@ for (let cc = 0; cc < 8; cc++) {
   const name = COND_NAMES[cc]!;
   def(
     code, `C${name}`, 3, 9,
-    (ctx) => { const a = fetch16(ctx); if (cond(ctx, cc)) { push16(ctx, ctx.pc); ctx.pc = a; } },
+    (ctx) => { const a = fetch16(ctx); if (cond(ctx, cc)) { push16(ctx, ctx.pc); ctx.pc = a; ctx.branchTaken = true; } },
     (b) => `C${name} ${hex4(b[1]! | (b[2]! << 8))}H`,
     18,
   );
@@ -521,7 +527,7 @@ for (let cc = 0; cc < 8; cc++) {
   const name = COND_NAMES[cc]!;
   def(
     code, `R${name}`, 1, 6,
-    (ctx) => { if (cond(ctx, cc)) ctx.pc = pop16(ctx); },
+    (ctx) => { if (cond(ctx, cc)) { ctx.pc = pop16(ctx); ctx.branchTaken = true; } },
     () => `R${name}`,
     12,
   );

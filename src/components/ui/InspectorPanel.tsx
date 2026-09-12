@@ -122,6 +122,9 @@ export function InspectorPanel(): React.JSX.Element {
                 max={prop.max}
                 value={Number(c.getConfig()[prop.key] ?? 0)}
                 onChange={(e) => {
+                  // Empty (or sign-only) input is an in-progress edit —
+                  // Number('') === 0 would rebase the component to 0.
+                  if (e.target.value === '' || e.target.value === '-') return;
                   const v = Number(e.target.value);
                   if (!Number.isNaN(v)) setProp(c.id, prop.key, v);
                 }}

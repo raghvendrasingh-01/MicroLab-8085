@@ -19,16 +19,18 @@ export class IoBus {
   private readonly map: Array<Peripheral | null> = new Array(256).fill(null);
   private readonly conflicts: IoConflict[] = [];
 
-  /** Attempt to register a peripheral; returns false on conflict. */
+  /** Attempt to register a peripheral; returns false on conflict.
+   *  A window that would extend past 0xFF is rejected — it must not wrap
+   *  around and silently claim the low ports. */
   register(p: Peripheral): boolean {
     const base = p.baseAddress & 0xff;
     const size = p.addressCount;
+    if (size < 1 || base + size > 256) return false;
     for (let a = base; a < base + size; a++) {
-      const addr = a & 0xff;
-      const existing = this.map[addr];
+      const existing = this.map[a];
       if (existing && existing !== p) {
         this.conflicts.push({
-          address: addr,
+          address: a,
           first: `${existing.label} (${existing.type})`,
           second: `${p.label} (${p.type})`,
         });
@@ -36,7 +38,7 @@ export class IoBus {
       }
     }
     for (let a = base; a < base + size; a++) {
-      this.map[a & 0xff] = p;
+      this.map[a] = p;
     }
     return true;
   }

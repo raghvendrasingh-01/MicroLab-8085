@@ -584,8 +584,8 @@ body.resizing-h, body.resizing-h * { cursor: row-resize !important; user-select:
 /* wires */
 .wire { fill: none; stroke-width: 2.5; pointer-events: none; }
 .wire-hi { stroke: var(--warn); filter: drop-shadow(0 0 3px var(--warn)); }
-.wire-lo { stroke: #3a4a63; }
-.wire.undriven { stroke: #333c4d; stroke-dasharray: 5 4; }
+.wire-lo { stroke: #6b82ad; }
+.wire.undriven { stroke: #8494a7; stroke-dasharray: 5 4; }
 .wire.selected { stroke: var(--accent); stroke-width: 3.5; }
 /* stroke-width comes from the element attribute: zoom-compensated (~24px on screen) */
 .wire-hit { fill: none; stroke: transparent; cursor: pointer; }
